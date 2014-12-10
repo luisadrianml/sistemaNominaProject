@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="385.0" prefWidth="444.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemanomina.EmpresaDataController">
+   <children>
+      <TitledPane animated="false" collapsible="false" prefHeight="145.0" prefWidth="444.0" text="Crear empresa">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="93.0" prefWidth="442.0">
+               <children>
+                  <Label layoutX="47.0" layoutY="14.0" text="ID:" />
+                  <Label layoutX="15.0" layoutY="48.0" text="Nombre:" />
+                  <TextField editable="false" layoutX="64.0" layoutY="10.0" />
+                  <TextField editable="false" layoutX="64.0" layoutY="44.0" />
+                  <TextField editable="false" layoutX="64.0" layoutY="78.0" />
+                  <Label layoutX="35.0" layoutY="82.0" text="RNC:" />
+                  <Button disable="true" layoutX="372.0" layoutY="78.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="56.0" text="Crear" />
+                  <Button disable="true" layoutX="307.0" layoutY="78.0" mnemonicParsing="false" text="Limpiar" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutY="145.0" prefHeight="151.0" prefWidth="444.0" text="Editar empresa">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ComboBox fx:id="cmb_emp_id" editable="true" layoutX="64.0" layoutY="14.0" prefWidth="150.0" promptText="1" />
+                  <Label layoutX="47.0" layoutY="18.0" text="ID:" />
+                  <TextField fx:id="txt_emp_nombre" layoutX="65.0" layoutY="48.0" />
+                  <Label layoutX="16.0" layoutY="52.0" text="Nombre:" />
+                  <TextField fx:id="txt_emp_rnc" layoutX="65.0" layoutY="82.0" />
+                  <Label layoutX="36.0" layoutY="86.0" text="RNC:" />
+                  <Button layoutX="381.0" layoutY="82.0" mnemonicParsing="false" onAction="#hB_emp_edit" text="Editar" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutY="296.0" prefHeight="89.0" prefWidth="444.0" text="Seleccionar empresa">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="48.0" layoutY="23.0" text="ID:" />
+                  <ComboBox disable="true" layoutX="65.0" layoutY="19.0" prefWidth="150.0" />
+                  <Button disable="true" layoutX="352.0" layoutY="19.0" mnemonicParsing="false" text="Seleccionar" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+   </children>
+</AnchorPane>

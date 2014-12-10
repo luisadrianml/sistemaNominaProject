@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import java.net.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="204.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemanomina.AdminPrimaryScreenController">
+   <children>
+      <Button layoutX="10.0" layoutY="89.0" mnemonicParsing="false" onAction="#hB_Users" prefHeight="104.0" prefWidth="136.0" text="Crear, editar y borrar usuarios" textAlignment="CENTER" wrapText="true" />
+      <Button layoutX="158.0" layoutY="89.0" mnemonicParsing="false" onAction="#hB_Empre" prefHeight="104.0" prefWidth="136.0" text="Datos de empresa" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e87e7e" height="75.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="600.0" />
+
+   </children>
+</AnchorPane>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="SistemaNomina.jnlp">
+  <information>
+    <title>SistemaNomina</title>
+    <vendor>pc167</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <jfx:javafx-runtime version="2.2+" href="http://javadl.sun.com/webapps/download/GetFile/javafx-latest/windows-i586/javafx2.jnlp"/>
+  </resources>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="SistemaNomina.jar" size="228613" download="eager" />
+    <jar href="lib/mysql-connector-java-5.1.23-bin.jar" size="860444" download="eager" />
+    <jar href="lib/openjfx-dialogs-1.0.2.jar" size="155557" download="eager" />
+  </resources>
+<security>
+  <all-permissions/>
+</security>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="SistemaNomina" >
+    <param name="requiredFXVersion" value="2.2+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="sistemanomina.SistemaNomina"  name="SistemaNomina" />
+  <update check="always"/>
+</jnlp>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="508.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemanomina.CalculoPrestacionesController">
+   <children>
+      <Button layoutX="267.0" layoutY="440.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="84.0" text="Limpiar" />
+      <MenuBar prefHeight="25.0" prefWidth="620.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Label layoutX="14.0" layoutY="90.0" text="Cédula empleado:" />
+      <TextField layoutX="112.0" layoutY="86.0" promptText="400-0000000-3" />
+      <TextField disable="true" editable="false" focusTraversable="false" layoutX="112.0" layoutY="120.0" promptText="John" />
+      <Label layoutX="63.0" layoutY="124.0" text="Nombre:" />
+      <TextField disable="true" editable="false" focusTraversable="false" layoutX="112.0" layoutY="154.0" promptText="Doe" />
+      <Label layoutX="63.0" layoutY="158.0" text="Apellido:" />
+      <Label layoutX="17.0" layoutY="218.0" text="Fecha de ingreso:" />
+      <Label layoutX="26.0" layoutY="252.0" text="Fecha de salida:" />
+      <TextField disable="true" editable="false" focusTraversable="false" layoutX="112.0" layoutY="214.0" promptText="mm/dd/yyyy" />
+      <DatePicker layoutX="112.0" layoutY="248.0" promptText="mm/dd/yyyy" />
+      <TextField disable="true" editable="false" focusTraversable="false" layoutX="112.0" layoutY="308.0" promptText="Mensual" />
+      <TextField disable="true" editable="false" focusTraversable="false" layoutX="112.0" layoutY="368.0" promptText="1 año y 3 meses" />
+      <Label layoutX="36.0" layoutY="312.0" text="Tipo de pago:" />
+      <Label layoutX="16.0" layoutY="372.0" text="Tiempo laborado:" />
+      <TitledPane animated="false" collapsible="false" layoutX="290.0" layoutY="54.0" prefHeight="371.0" prefWidth="319.0" text="Resultados">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="119.0" prefWidth="298.0">
+               <children>
+                  <Label layoutX="34.0" layoutY="14.0" text="Sumatoria de salarios">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="8.0" layoutY="48.0" text="Salario promedio mensual">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="22.0" layoutY="82.0" text="Salario promedio diario" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField editable="false" focusTraversable="false" layoutX="158.0" layoutY="10.0" promptText="RD$0.00" />
+                  <TextField editable="false" focusTraversable="false" layoutX="158.0" layoutY="44.0" promptText="RD$0.00" />
+                  <TextField editable="false" focusTraversable="false" layoutX="158.0" layoutY="78.0" promptText="RD$0.00" />
+                  <Separator layoutX="33.0" layoutY="121.0" prefHeight="5.0" prefWidth="251.0" />
+                  <CheckBox layoutX="44.0" layoutY="156.0" mnemonicParsing="false" text="Sin pre-avisado" />
+                  <Label layoutX="10.0" layoutY="132.0" text="Incluir:" />
+                  <TextField editable="false" focusTraversable="false" layoutX="158.0" layoutY="152.0" promptText="RD$0.00" />
+                  <TextField editable="false" focusTraversable="false" layoutX="158.0" layoutY="186.0" promptText="RD$0.00" />
+                  <CheckBox layoutX="44.0" layoutY="190.0" mnemonicParsing="false" text="Cesantía" />
+                  <TextField editable="false" focusTraversable="false" layoutX="158.0" layoutY="220.0" promptText="RD$0.00" />
+                  <CheckBox layoutX="44.0" layoutY="224.0" mnemonicParsing="false" text="Vacaciones" />
+                  <TextField editable="false" focusTraversable="false" layoutX="158.0" layoutY="254.0" promptText="RD$0.00" />
+                  <CheckBox layoutX="44.0" layoutY="258.0" mnemonicParsing="false" text="Navidad" />
+                  <Label layoutX="145.0" layoutY="290.0" text="Total">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField alignment="CENTER" editable="false" layoutX="85.0" layoutY="307.0" promptText="RD$0.00" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <Button layoutX="372.0" layoutY="440.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="84.0" text="Imprimir" />
+      <Button layoutX="165.0" layoutY="440.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="81.0" text="Calcular" />
+      <Text fontSmoothingType="LCD" layoutX="112.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Datos de empleado">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

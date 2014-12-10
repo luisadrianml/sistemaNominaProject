@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="394.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemanomina.ContPrimaryScreenController">
+   <children>
+      <Button layoutX="10.0" layoutY="89.0" mnemonicParsing="false" onAction="#btn_addEmployee" prefHeight="104.0" prefWidth="136.0" text="Agregar empleado" textAlignment="CENTER" wrapText="true" />
+      <Button layoutX="158.0" layoutY="89.0" mnemonicParsing="false" onAction="#btn_editEmployee" prefHeight="104.0" prefWidth="136.0" text="Editar empleado" />
+      <Button layoutX="499.0" layoutY="328.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="91.0" text="Cerrar" textAlignment="CENTER" wrapText="true" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e0f092" height="75.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="600.0" />
+      <Button layoutX="306.0" layoutY="89.0" mnemonicParsing="false" onAction="#btn_calcularPrestaciones" prefHeight="104.0" prefWidth="136.0" text="Calcular las prestaciones" textAlignment="CENTER" wrapText="true" />
+      <Button layoutX="454.0" layoutY="89.0" mnemonicParsing="false" onAction="#btn_nomina" prefHeight="228.0" prefWidth="136.0" text="Nomina" />
+      <Button layoutX="10.0" layoutY="213.0" mnemonicParsing="false" onAction="#btn_Departamentos" prefHeight="104.0" prefWidth="136.0" text="Departamentos" />
+      <Button layoutX="158.0" layoutY="213.0" mnemonicParsing="false" onAction="#btn_Cargos" prefHeight="104.0" prefWidth="136.0" text="Cargos" />
+      <Button layoutX="306.0" layoutY="213.0" mnemonicParsing="false" onAction="#btn_Novedades" prefHeight="104.0" prefWidth="136.0" text="Novedades" />
+   </children>
+</AnchorPane>

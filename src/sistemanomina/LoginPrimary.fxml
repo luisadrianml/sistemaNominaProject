@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="193.0" prefWidth="231.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemanomina.LoginPrimaryController">
+    <children>
+        <Button fx:id="bttn_login" layoutX="178.0" layoutY="146.0" onAction="#hBlogin" text="Entrar" />
+        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
+      <Button fx:id="hBClean" layoutX="113.0" layoutY="146.0" mnemonicParsing="false" onAction="#hBClean" text="Limpiar" />
+      <TextField fx:id="text_user" layoutX="77.0" layoutY="69.0" />
+      <PasswordField fx:id="text_pass" layoutX="77.0" layoutY="103.0" />
+      <Label layoutX="32.0" layoutY="73.0" text="Usuario:" />
+      <Label layoutX="43.0" layoutY="107.0" text="Clave:" />
+      <Rectangle arcWidth="5.0" fill="#eaf5ff" height="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="257.0" />
+      <Text fontSmoothingType="LCD" layoutX="49.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sistema de nomina">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Text>
+    </children>
+</AnchorPane>
