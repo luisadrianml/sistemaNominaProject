@@ -49,6 +49,8 @@ select * from tipos_ingresos;
 insert into tipos_ingresos(nombre) values('Ingreso 1');
 
 
+insert into empleado_admin(fecha_ingreso,id_departamento,id_cargo,tipo_salario,id_estado) values ('2008-05-01',1,1,1,1);
+
 select * from tipos_descuentos;
 insert into tipos_descuentos(nombre) values('Deduccion 1');
 
@@ -81,14 +83,25 @@ insert into deduccioness_emp(id_empleado,tipo_deduccion,monto,estado) values(2,1
 insert into deduccioness_emp(id_empleado,tipo_deduccion,monto,estado) values(3,1,200,1);
 insert into deduccioness_emp(id_empleado,tipo_deduccion,monto,estado) values(4,1,200,1);
 
-
-
-
-
+insert into empresa(nombre,rnc) values ('CROOM', '101027797');
 
 
 
 
 SELECT NOMBRE,MONTO FROM EMPLEADO_ADMIN EA JOIN CARGO C ON EA.ID_CARGO = C.ID WHERE EA.ID = 1;
 
+
+insert into tipo_usuarios(nombre)  values ('administrador');
+insert into tipo_usuarios(nombre) values ('contable');
+
+insert into usuario_pers values ('luis', 'luisa','martinez','lm@outlook.com');
+
+select * from tipo_usuarios;
+select * from empresa;
+
+select LAST_INSERT_ID()  from empleado_admin;
+
+select max(id) from empleado_admin
+
+select * from empleado_personal
 

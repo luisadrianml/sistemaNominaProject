@@ -19,7 +19,7 @@ public class MySqlDataBase {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             url="jdbc:mysql://localhost:3306/nomina1";
-            conn = DriverManager.getConnection(url,"root","1234");
+            conn = DriverManager.getConnection(url,"root","");
             System.out.println("Se ha conectado la Base de Datos "+url+".........Ok");
  
         

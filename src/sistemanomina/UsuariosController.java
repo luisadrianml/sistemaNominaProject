@@ -5,9 +5,11 @@
  */
 package sistemanomina;
 
+import entidades.Administrador;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -21,7 +23,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
-import mySql.MySqlDataBase;
+import mysql.MySqlDataBase;
 
 /**
  * FXML Controller class
@@ -30,9 +32,16 @@ import mySql.MySqlDataBase;
  */
 public class UsuariosController implements Initializable {
 
+    
+    /**
+     * Declaracion de variables 
+     */
     MySqlDataBase database = new MySqlDataBase();
-
-@FXML
+    
+    /**
+     * Declaracion variables de graficos
+     */
+    @FXML
     private ComboBox<String> cmb_edit_tipoUs;
 
     @FXML
@@ -82,7 +91,12 @@ public class UsuariosController implements Initializable {
 
     @FXML
     private TextField txt_edit_email;
-
+    
+    
+    /**
+     * Metodo al clic el boton de Crear
+     * @param event 
+     */
     @FXML
     void hB_crear(ActionEvent event) {
         int tipo_user;
@@ -91,10 +105,12 @@ public class UsuariosController implements Initializable {
         } else {
             tipo_user = 2;
         }
-        database.Insert("usuarios", "usuario, clave, tipo_usuario", "'"+text_usuario.getText()+"','"+text_clave.getText()+"',"+tipo_user+"");
-        database.Insert("usuario_pers", "'"+text_usuario.getText()+"','"+text_nombre.getText()+"','"+text_apellido.getText()+"','"+text_email.getText()+"'");
-        clearFields(1);
-        
+                    database.Insert("usuarios", "usuario, clave, tipo_usuario", "'"+text_usuario.getText()+"','"+text_clave.getText()+"',"+tipo_user+"");
+                    database.Insert("usuario_pers", "'"+text_usuario.getText()+"','"+text_nombre.getText()+"','"+text_apellido.getText()+"','"+text_email.getText()+"'");
+ 
+
+        clearFields(1); // Metodo de limpieza de campos
+        fillComboBox_tipo_usuario();
     }
 
     @FXML
@@ -115,7 +131,10 @@ public class UsuariosController implements Initializable {
         }
     }
     
-    
+    /**
+     * Metodo al clic el boton Editar de la misma Tab editar. Ejecuta las acciones de llevar a la base los datos nuevos.
+     * @param event 
+     */
     @FXML
     void hB_edit(ActionEvent event) {
         database.Update("usuario_pers", "nombre='"+txt_edit_nombre.getText()+"',apellido='"+txt_edit_apellido.getText()+"',correo='"+txt_edit_email.getText()+"'", "id_usuario", cmb_usuario_edit.getValue());
@@ -125,9 +144,15 @@ public class UsuariosController implements Initializable {
         fillComboBox_editar();
         fillComboBox_edit_tipos_usuarios();
         System.out.println("Success editando!");
-        //SHOW SUCCESS
+        /**
+         * @todo SHOW SUCCESS
+         */
     }
-
+    
+    /**
+     * Metodo para limpiar los campos de la Tab seleccionada
+     * @param tab_index 
+     */
      private void clearFields(int tab_index) {
          switch (tab_index) {
              case 1: {
@@ -137,10 +162,12 @@ public class UsuariosController implements Initializable {
                         text_clave.clear();
                         text_email.clear();
                         text_usuario.clear();
+                        //cmb_tipo.getItems().clear();
                         cmb_tipo.setPromptText("Seleccione...");
                  break;
              }
              case 2: {
+                        // TAB PARA EDITAR
                         txt_edit_nombre.clear();
                         txt_edit_apellido.clear();
                         txt_edit_clave.clear();
@@ -156,14 +183,14 @@ public class UsuariosController implements Initializable {
     private void fillComboBox_tipo_usuario() {
         
       
-        ResultSet rs = database.Select("nombre","tipo_usuarios");
+        ResultSet rs = database.Select("*","tipo_usuarios");
         cmb_tipo.setPromptText("Seleccione...");
         cmb_tipo.getItems().clear();
         clearFields(1);
         
         try{
             while(rs.next()){
-                cmb_tipo.getItems().add(rs.getString("nombre"));
+                cmb_tipo.getItems().add(rs.getString("nombre").substring(0,1).toUpperCase()+rs.getString("nombre").substring(1));
     
             }
         }catch(SQLException ex){
@@ -204,6 +231,10 @@ public class UsuariosController implements Initializable {
         }
     }
     
+    
+    /**
+     * Metodo para llenar el combobox de los tipos de usuarios usuarios que dispone la base de datos
+     */
     private void fillComboBox_edit_tipos_usuarios() {
         ResultSet rs = database.Select("nombre","tipo_usuarios");
         cmb_edit_tipoUs.setPromptText("Seleccione...");
@@ -212,7 +243,7 @@ public class UsuariosController implements Initializable {
         
         try{
             while(rs.next()){
-                cmb_edit_tipoUs.getItems().add(rs.getString("nombre"));
+                cmb_edit_tipoUs.getItems().add(rs.getString("nombre").substring(0,1).toUpperCase() + rs.getString("nombre").substring(1));
     
             }
         }catch(SQLException ex){
@@ -246,6 +277,7 @@ public class UsuariosController implements Initializable {
             public void handle(Event event) {
                 fillComboBox_editar();
                 fillComboBox_edit_tipos_usuarios();
+                clearFields(2);
             }
         });
         

@@ -30,10 +30,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import mySql.MySqlDataBase;
+import mysql.MySqlDataBase;
 
 /**
  * FXML Controller class
@@ -47,6 +48,7 @@ public class AddEmployeeController implements Initializable {
     Departamento departamento;
     Cargo cargos;
     TipoSalario tipoSalario;
+    int flag_bug =1;
     
 //    
     ArrayList<Departamento> arrayDepart;
@@ -103,7 +105,10 @@ public class AddEmployeeController implements Initializable {
     private ComboBox<Dependientes> dependiente_tipo;
 
     @FXML
-    private TextField dependientes_nombre;
+    private TextField dependientes_nombre; 
+    
+    @FXML
+    private Button btn_limpiarEvent;
 
     @FXML
     private TextField admin_id;
@@ -134,25 +139,57 @@ public class AddEmployeeController implements Initializable {
     void btn_empleado_guardar(ActionEvent event) {
         
         if (all_camps()) {
-
-
-                database.Insert("empleado_admin", ""+admin_id.getText()+",'"+admin_fechaIngreso.getValue().toString()+"',"+
+            try {
+                database.Insert("empleado_admin(fecha_ingreso,id_departamento,id_cargo,tipo_salario,id_estado)", ""+"'"+admin_fechaIngreso.getValue().toString()+"',"+
                         admin_departamento.getValue().getId()+","+admin_cargo.getValue().getId()+","+admin_tiposalario.getValue().getId()+","+""
-                        + "'a'");
+                        + "1");
   
                 database.Insert("empleado_personal", ""+admin_id.getText()+",'"+empleado_cedula.getText()+"','"+empleado_nombre.getText()+"','"+empleado_apellido.getText()+"','"+empleado_direccion.getText()+"','"+empleado_sexo.getValue().getId()+"','"+
                         empleado_civil.getValue().getId()+"','"+empleado_nacimiento.getValue().toString()+"','"+empleado_mail.getText()+"','"+empleado_movil.getText()+"','"+empleado_telefono.getText()+"'");
         
                 
                 database.Insert("dependientes","id_empleado,nombre,apellido,cedula,tipo_dependiente",admin_id.getText()+",'"+dependientes_nombre.getText()+"','"+dependientes_apellido.getText()+"','"+dependientes_ced.getText()+"','"+dependiente_tipo.getValue().getTipo()+"'");
+            } catch(Exception ex) {
+                System.out.println(ex);
+            }
         }
+        
+        btn_empleado_limpiar(null);
+        
     }
     
 
     @FXML
     void btn_empleado_limpiar(ActionEvent event) {
-
+        flag_bug = 2;
+        empleado_cedula.clear();
+        empleado_nombre.clear();
+        empleado_apellido.clear();
+        empleado_sexo.getSelectionModel().clearSelection();
+        empleado_civil.getSelectionModel().clearSelection();
+        empleado_nacimiento.setValue(null);
+        empleado_mail.clear();
+        empleado_movil.clear();
+        empleado_telefono.clear();
+        empleado_direccion.clear();
+        
+        dependientes_nombre.clear();
+        dependientes_apellido.clear();
+        dependientes_ced.clear();
+        dependiente_tipo.getSelectionModel().clearSelection();
+        
+        admin_id.clear();
+        setID();
+        admin_fechaIngreso.setValue(null);
+        admin_departamento.getSelectionModel().clearSelection();
+        admin_tiposalario.getSelectionModel().clearSelection();
+        admin_monto_salario.clear();
+        admin_cargo.getSelectionModel().clearSelection();
+        flag_bug = 1;
     }
+    
+    
+    
 
 
     
@@ -164,15 +201,33 @@ public class AddEmployeeController implements Initializable {
         // TODO
         database.getConn();
         llenarComboBox();
+        setID();
         
         admin_cargo.valueProperty().addListener(new ChangeListener<Cargo>() {
 
             @Override
             public void changed(ObservableValue<? extends Cargo> observable, Cargo oldValue, Cargo newValue) {
+                if (flag_bug == 1) {
                 colocarMonto(newValue);
+    
+                }
+                
             }
         });
     }    
+    
+    private void setID() {
+        ResultSet rs5 = database.Select("max(id)", "empleado_admin");
+        
+        try {
+            while(rs5.next()) {
+                admin_id.setText(""+(rs5.getInt(1)+1));
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
     
     void colocarMonto(Cargo crg) {
         admin_monto_salario.setText(crg.getSalario()+"");
@@ -231,7 +286,7 @@ public class AddEmployeeController implements Initializable {
     private void gettingDataforCargo() {
           arrayCargo = new ArrayList<>();
  //       arrayEmp.clear();
-        ResultSet rs = database.Select("*","cargo_monto");
+        ResultSet rs = database.Select("*","cargo");
         
         try{
             while(rs.next()){

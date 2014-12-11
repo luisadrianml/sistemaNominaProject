@@ -31,7 +31,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import mySql.MySqlDataBase;
+import mysql.MySqlDataBase;
 
 /**
  * FXML Controller class
@@ -61,7 +61,7 @@ public class EditEmployeeController implements Initializable {
             new EstadoCivil("Viudo","viudo"));
     
     private final ObservableList<Estados> estados = FXCollections.observableArrayList(
-    new Estados("a","Activo"), new Estados("i", "Inactivo")
+    new Estados(1,"Activo"), new Estados(2, "Inactivo")
     );
     
     private ObservableList<Dependientes> dependientes = FXCollections.observableArrayList(new Dependientes(Dependientes.Tipo_Dependientes.ABUELA.toString()),new Dependientes(Dependientes.Tipo_Dependientes.ABUELO.toString()),
@@ -213,6 +213,15 @@ public class EditEmployeeController implements Initializable {
     
     } 
     
+    /**
+     * Metodo para la busqueda de codigo de empleado
+     * @deprecated 
+     */
+    @FXML
+    void searchIconClicked(ActionEvent event) {
+
+    }
+    
     private boolean all_camps_validated() {
         return true;
     }
@@ -280,10 +289,10 @@ public class EditEmployeeController implements Initializable {
     }
     
         private Empleado_Admin settingItState(Empleado_Admin empleado_admin) {
-            if (empleado_admin.getEstado().equals("a")) {
-            empleado_admin.setEstados( new Estados("a","Activo")) ;
+            if (empleado_admin.getEstado() == 1) {
+            empleado_admin.setEstados( new Estados(1,"Activo")) ;
         } else {
-            empleado_admin.setEstados( new Estados("i","Inactivo"));
+            empleado_admin.setEstados( new Estados(2,"Inactivo"));
         }
             
             return empleado_admin;
@@ -458,10 +467,10 @@ public class EditEmployeeController implements Initializable {
                 
                 /**
                  * @todo 
-                 * Creacion de objeto de empleado_admin
+                 * Creation of objects empleado_admin
                  */
                 arrayAdminID.add(new Empleado_Admin(rs.getInt("id"), rs.getString("fecha_ingreso"), dp ,
-                cg , tp , rs.getString("id_estado")));
+                cg , tp , rs.getInt("id_estado")));
                 
             }
         }catch(SQLException ex){

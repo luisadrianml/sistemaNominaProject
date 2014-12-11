@@ -18,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 /**
@@ -32,9 +33,16 @@ public class ContPrimaryScreenController implements Initializable {
         try {
             Stage stage1 = new Stage();
             Parent root2;
-            root2 = FXMLLoader.load(getClass().getResource("AddEmployee.fxml"));
+            root2 = FXMLLoader.load(getClass().getResource("/vistas/AddEmployee.fxml"));
             Scene scene = new Scene(root2);
             stage1.setScene(scene);
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/AddEmployee.fxml"));
+            
+            loader.load();
+            AddEmployeeController controller = loader.getController();
+            controller.test("prueba");
+            
             stage1.show();
             
             
@@ -58,7 +66,7 @@ public class ContPrimaryScreenController implements Initializable {
         try {
             Stage stage1 = new Stage();
             Parent root2;
-            root2 = FXMLLoader.load(getClass().getResource("EditEmployee.fxml"));
+            root2 = FXMLLoader.load(getClass().getResource("/vistas/EditEmployee.fxml"));
             Scene scene = new Scene(root2);
             stage1.setScene(scene);
             stage1.show();

@@ -24,7 +24,7 @@ public class SistemaNomina extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("LoginPrimary.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/vistas/LoginPrimary.fxml"));
         
         Scene scene = new Scene(root);
         stage.setTitle("Sistema de Nomina");

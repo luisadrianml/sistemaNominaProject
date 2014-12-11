@@ -15,14 +15,14 @@ public class Empleado_Admin {
     private int id_departamento;
     private int id_cargo;
     private int tipo_salario;
-    private String estado;
+    private int estado;
     
     private Departamento departamento;
     private Cargo cargo;
     private TipoSalario tipoSalario;
     private Estados estados;
 
-    public Empleado_Admin(int id, String fecha_ingreso, int id_departamento, int id_cargo, int tipo_salario, String estado, Departamento departamento, Cargo cargo, TipoSalario tipoSalario) {
+    public Empleado_Admin(int id, String fecha_ingreso, int id_departamento, int id_cargo, int tipo_salario, int estado, Departamento departamento, Cargo cargo, TipoSalario tipoSalario) {
         this.id = id;
         this.fecha_ingreso = fecha_ingreso;
         this.id_departamento = id_departamento;
@@ -34,7 +34,7 @@ public class Empleado_Admin {
         this.tipoSalario = tipoSalario;
     }
 
-    public Empleado_Admin(int id, String fecha_ingreso, int id_departamento, int id_cargo, int tipo_salario, String estado) {
+    public Empleado_Admin(int id, String fecha_ingreso, int id_departamento, int id_cargo, int tipo_salario, int estado) {
         this.id = id;
         this.fecha_ingreso = fecha_ingreso;
         this.id_departamento = id_departamento;
@@ -43,7 +43,7 @@ public class Empleado_Admin {
         this.estado = estado;
     }
 
-    public Empleado_Admin(int id, String fecha_ingreso, Departamento departamento, Cargo cargo, TipoSalario tipoSalario, String estado) {
+    public Empleado_Admin(int id, String fecha_ingreso, Departamento departamento, Cargo cargo, TipoSalario tipoSalario, int estado) {
         this.id = id;
         this.fecha_ingreso = fecha_ingreso;
         this.estado = estado;
@@ -98,11 +98,11 @@ public class Empleado_Admin {
         this.tipo_salario = tipo_salario;
     }
 
-    public String getEstado() {
+    public int getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(int estado) {
         this.estado = estado;
     }
 

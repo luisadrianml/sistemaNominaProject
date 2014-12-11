@@ -17,7 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import mySql.MySqlDataBase;
+import mysql.MySqlDataBase;
 
 /**
  * FXML Controller class

@@ -11,7 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import mySql.MySqlDataBase;
+import mysql.MySqlDataBase;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -42,7 +42,7 @@ public class EmpresaDataController implements Initializable {
 
     @FXML
     void hB_emp_edit(ActionEvent event) {
-        database.Update("empresa", "nombre='"+txt_emp_nombre.getText()+"',rnc='"+txt_emp_rnc.getText()+"'", "id", 1);
+        database.Update("empresa", "nombre='"+txt_emp_nombre.getText()+"',rnc='"+txt_emp_rnc.getText()+"'", "id", arrayEmp.get(0).getID());
         clearFields();
         fillEmpresas();
         changeTxt();

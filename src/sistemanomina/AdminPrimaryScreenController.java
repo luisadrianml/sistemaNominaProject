@@ -33,7 +33,7 @@ public class AdminPrimaryScreenController implements Initializable {
     void hB_Users(ActionEvent event) throws IOException {
             Stage stage1 = new Stage();
             Parent root;
-            root = FXMLLoader.load(getClass().getResource("Usuarios.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/vistas/Usuarios.fxml"));
             Scene scene = new Scene(root);
             stage1.setScene(scene);
             stage1.show();
@@ -56,7 +56,7 @@ public class AdminPrimaryScreenController implements Initializable {
 
         Stage stage1 = new Stage();
             Parent root;
-            root = FXMLLoader.load(getClass().getResource("EmpresaData.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/vistas/EmpresaData.fxml"));
             Scene scene = new Scene(root);
             stage1.setScene(scene);
             stage1.show();

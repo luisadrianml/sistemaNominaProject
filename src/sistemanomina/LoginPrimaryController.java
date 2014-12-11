@@ -21,7 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import mySql.MySqlDataBase;
+import mysql.MySqlDataBase;
 
 
 /**
@@ -70,7 +70,7 @@ public class LoginPrimaryController implements Initializable {
             // abrir nueva ventana
             Stage stage1 = new Stage();
             Parent root;
-            root = FXMLLoader.load(getClass().getResource("ContPrimaryScreen.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/vistas/ContPrimaryScreen.fxml"));
             Scene scene = new Scene(root);
             stage1.setScene(scene);
             stage1.show();

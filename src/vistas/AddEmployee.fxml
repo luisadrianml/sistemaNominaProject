@@ -12,7 +12,7 @@
 <AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="569.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemanomina.AddEmployeeController">
    <children>
       <Button layoutX="332.0" layoutY="517.0" mnemonicParsing="false" onAction="#btn_empleado_guardar" prefHeight="54.0" prefWidth="81.0" text="Guardar" />
-      <Button layoutX="424.0" layoutY="517.0" mnemonicParsing="false" onAction="#btn_empleado_limpiar" prefHeight="54.0" prefWidth="106.0" text="Limpiar campos" />
+      <Button fx:id="btn_limpiarEvent" layoutX="424.0" layoutY="517.0" mnemonicParsing="false" onAction="#btn_empleado_limpiar" prefHeight="54.0" prefWidth="106.0" text="Limpiar campos" />
       <TextField fx:id="empleado_cedula" layoutX="76.0" layoutY="70.0" promptText="001-00000000-5" />
       <Label layoutX="34.0" layoutY="74.0" text="Cédula:" />
       <TextField fx:id="empleado_nombre" layoutX="76.0" layoutY="104.0" promptText="John" />
@@ -54,7 +54,7 @@
       <Label layoutX="28.0" layoutY="461.0" text="Nombre:" />
       <TextField fx:id="dependientes_apellido" layoutX="77.0" layoutY="491.0" promptText="Doecito" />
       <Label layoutX="28.0" layoutY="495.0" text="Apellido:" />
-      <TextField fx:id="admin_id" layoutX="384.0" layoutY="70.0" />
+      <TextField fx:id="admin_id" editable="false" layoutX="384.0" layoutY="70.0" />
       <Label layoutX="311.0" layoutY="74.0" text="ID empleado:" />
       <Label layoutX="289.0" layoutY="108.0" text="Fecha de ingreso:" />
       <DatePicker fx:id="admin_fechaIngreso" layoutX="384.0" layoutY="104.0" promptText="mm/dd/yyyy" />
