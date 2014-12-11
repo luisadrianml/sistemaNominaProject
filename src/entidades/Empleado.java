@@ -59,6 +59,20 @@ public class Empleado {
         this.telefono = telefono;
         this.movil = movil;
     }
+    
+        public Empleado(int ID_empleado, String cedula, String nombre, String apellido, String direccion, Sexo sexo, EstadoCivil estadocivil, String nacimiento, String email, String telefono, String movil) {
+        this.ID_empleado = ID_empleado;
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.direccion = direccion;
+        this.sex = sexo;
+        this.estadocvil = estadocivil;
+        this.nacimiento = nacimiento;
+        this.email = email;
+        this.telefono = telefono;
+        this.movil = movil;
+    }
 
     public Empleado() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

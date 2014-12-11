@@ -11,6 +11,7 @@ import entidades.Dependientes;
 import entidades.Empleado;
 import entidades.Empleado_Admin;
 import entidades.EstadoCivil;
+import entidades.Estados;
 import entidades.Sexo;
 import entidades.TipoSalario;
 import java.net.URL;
@@ -59,6 +60,10 @@ public class EditEmployeeController implements Initializable {
     new EstadoCivil("Soltero", "soltero"),new EstadoCivil("Casado","casado"),new EstadoCivil("Divorciado","divorciado"),
             new EstadoCivil("Viudo","viudo"));
     
+    private final ObservableList<Estados> estados = FXCollections.observableArrayList(
+    new Estados("a","Activo"), new Estados("i", "Inactivo")
+    );
+    
     private ObservableList<Dependientes> dependientes = FXCollections.observableArrayList(new Dependientes(Dependientes.Tipo_Dependientes.ABUELA.toString()),new Dependientes(Dependientes.Tipo_Dependientes.ABUELO.toString()),
             new Dependientes(Dependientes.Tipo_Dependientes.CONYUGE.toString()), new Dependientes(Dependientes.Tipo_Dependientes.HIJO.toString()),new Dependientes(Dependientes.Tipo_Dependientes.MADRE.toString()),
             new Dependientes(Dependientes.Tipo_Dependientes.PADRE.toString()));
@@ -77,6 +82,9 @@ public class EditEmployeeController implements Initializable {
 
     @FXML
     private ComboBox<Sexo> empleado_sexo;
+    
+    @FXML
+    private ComboBox<Estados> cmb_estado;
 
     @FXML
     private DatePicker admin_fechaIngreso;
@@ -133,6 +141,48 @@ public class EditEmployeeController implements Initializable {
 
     @FXML
     void btn_empleado_guardar(ActionEvent event) {
+        
+        if (all_camps_validated()) {
+            
+            empleado_admin = new Empleado_Admin(admin_id.getValue().getId(), admin_fechaIngreso.getValue().toString(), admin_departamento.getValue().getId(), admin_cargo.getValue().getId(), admin_tiposalario.getValue().getId(), 
+                    cmb_estado.getValue().getId(), admin_departamento.getValue(),admin_cargo.getValue(), admin_tiposalario.getValue());
+            
+            empleado_admin = settingItState(empleado_admin);
+            
+            empleado = new Empleado(empleado_admin.getId(), empleado_cedula.getText(),empleado_nombre.getText(), empleado_apellido.getText(), empleado_direccion.getText(), empleado_sexo.getValue(), empleado_civil.getValue(), 
+                    empleado_nacimiento.getValue().toString(), empleado_mail.getText(), empleado_telefono.getText(),empleado_movil.getText());
+            
+            dependiente = new Dependientes(dependiente.getId(), empleado_admin.getId() , dependientes_nombre.getText(), dependientes_apellido.getText(),dependientes_ced.getText(),dependiente_tipo.getValue().getTipo());
+  
+            
+            database.Update("empleado_admin", "fecha_ingreso='"+empleado_admin.getFecha_ingreso()+"',"
+                    +"id_departamento="+empleado_admin.getDepartamento().getId()+","
+                    +"id_cargo="+empleado_admin.getCargo().getId()+",tipo_salario="
+                    +empleado_admin.getTipoSalario().getId()
+                    +",id_estado='"+empleado_admin.getEstados().getId()+"'", "id", ""+empleado_admin.getId());
+            
+            database.Update("empleado_personal", "cedula='"+empleado.getCedula()+"',nombre='"+empleado.getNombre()+"',"
+                    +"apellido='"+empleado.getApellido()+"',direccion='"+empleado.getDireccion()+"',sexo='"
+                    +empleado.getSex().getId()+"',estado_civil='"+empleado.getEstadocvil().getId()+"',"
+                    +"email = '" + empleado.getEmail() + "',movil='" + empleado.getMovil() + "'," 
+                    + " telefono = '" + empleado.getTelefono() + "'", "id_empleado", ""+empleado_admin.getId());
+            
+            database.Update("dependientes", "nombre='"+dependiente.getNombre()+"',"
+                    +"apellido = '"+dependiente.getApellido() + "',"
+                    +"cedula='"+dependiente.getCedula()+ "'," 
+                    +"tipo_dependiente='"+dependiente.getTipo()+"'"
+                    , "id_empleado", ""+empleado_admin.getId());
+//                database.Insert("empleado_admin", ""+admin_id.getText()+",'"+admin_fechaIngreso.getValue().toString()+"',"+
+//                        admin_departamento.getValue().getId()+","+admin_cargo.getValue().getId()+","+admin_tiposalario.getValue().getId()+","+""
+//                        + "'a'");
+//  
+//                database.Insert("empleado_personal", ""+admin_id.getText()+",'"+empleado_cedula.getText()+"','"+empleado_nombre.getText()+"','"+empleado_apellido.getText()+"','"+empleado_direccion.getText()+"','"+empleado_sexo.getValue().getId()+"','"+
+//                        empleado_civil.getValue().getId()+"','"+empleado_nacimiento.getValue().toString()+"','"+empleado_mail.getText()+"','"+empleado_movil.getText()+"','"+empleado_telefono.getText()+"'");
+//        
+//                
+//                database.Insert("dependientes","id_empleado,nombre,apellido,cedula,tipo_dependiente",admin_id.getText()+",'"+dependientes_nombre.getText()+"','"+dependientes_apellido.getText()+"','"+dependientes_ced.getText()+"','"+dependiente_tipo.getValue().getTipo()+"'");
+//        
+        }
 
     }
 
@@ -162,6 +212,10 @@ public class EditEmployeeController implements Initializable {
     });
     
     } 
+    
+    private boolean all_camps_validated() {
+        return true;
+    }
     
     private void fillCampos(Empleado_Admin empAdmin) {
         empleado_admin = empAdmin;
@@ -215,7 +269,25 @@ public class EditEmployeeController implements Initializable {
         empleado_sexo.setValue(empleado.getSex());
         empleado_civil.setValue(empleado.getEstadocvil());
         empleado_nacimiento.setValue(LocalDate.of(Integer.parseInt(empleado.getNacimiento().substring(0, 4)), calcularMes(Integer.parseInt(empleado.getNacimiento().substring(5, 7))) , Integer.parseInt(empleado.getNacimiento().substring(8, 10))));
+        empleado_mail.setText(empleado.getEmail());
+        empleado_movil.setText(empleado.getMovil());
+        empleado_telefono.setText(empleado.getTelefono());
+        empleado_direccion.setText(empleado.getDireccion());
+        
+        
+     
+        cmb_estado.setValue(settingItState(empleado_admin).getEstados());
     }
+    
+        private Empleado_Admin settingItState(Empleado_Admin empleado_admin) {
+            if (empleado_admin.getEstado().equals("a")) {
+            empleado_admin.setEstados( new Estados("a","Activo")) ;
+        } else {
+            empleado_admin.setEstados( new Estados("i","Inactivo"));
+        }
+            
+            return empleado_admin;
+        }
     
         private void llenarComboBox() {
             
@@ -232,6 +304,8 @@ public class EditEmployeeController implements Initializable {
         admin_tiposalario.setItems(tiposSalarios);
         
         dependiente_tipo.setItems(dependientes);
+        
+        cmb_estado.setItems(estados);
 
  
     }
@@ -280,6 +354,7 @@ public class EditEmployeeController implements Initializable {
         }
              
     }
+    
     
     private Month calcularMes(int mes) {
 
@@ -381,14 +456,19 @@ public class EditEmployeeController implements Initializable {
                     tp = new TipoSalario(rsTS.getInt("id"), rsTS.getString("nombre"), rsTS.getFloat("factor"));
                 }
                 
-                
+                /**
+                 * @todo 
+                 * Creacion de objeto de empleado_admin
+                 */
                 arrayAdminID.add(new Empleado_Admin(rs.getInt("id"), rs.getString("fecha_ingreso"), dp ,
                 cg , tp , rs.getString("id_estado")));
-
+                
             }
         }catch(SQLException ex){
             System.out.println(ex);
         }
+        
+        
     }
 
     

@@ -11,9 +11,9 @@
   </resources>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="SistemaNomina.jar" size="228613" download="eager" />
+    <jar href="SistemaNomina.jar" size="230575" download="eager" />
     <jar href="lib/mysql-connector-java-5.1.23-bin.jar" size="860444" download="eager" />
-    <jar href="lib/openjfx-dialogs-1.0.2.jar" size="155557" download="eager" />
+    <jar href="lib/openjfx-dialogs-1.0.2.jar" size="155558" download="eager" />
   </resources>
 <security>
   <all-permissions/>

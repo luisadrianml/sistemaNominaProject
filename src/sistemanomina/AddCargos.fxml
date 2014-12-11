@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="285.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sistemanomina.AddCargosController">
+   <children>
+      <TitledPane prefHeight="151.0" prefWidth="285.0" text="Crear cargo">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="126.0" prefWidth="247.0">
+               <children>
+                  <Label layoutX="33.0" layoutY="20.0" text="Nombre:" />
+                  <TextField fx:id="cargocrear_monto" layoutX="82.0" layoutY="50.0" />
+                  <Label layoutX="41.0" layoutY="54.0" text="Monto:" />
+                  <Button layoutX="128.0" layoutY="83.0" mnemonicParsing="false" onAction="#btn_crear" prefHeight="33.0" prefWidth="58.0" text="Crear" />
+                  <TextField fx:id="cargocrear_nombre" layoutX="82.0" layoutY="16.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutY="151.0" prefHeight="151.0" prefWidth="285.0" text="Editar cargos">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="137.0" prefWidth="283.0">
+               <children>
+                  <Label layoutX="34.0" layoutY="18.0" text="Nombre:" />
+                  <ComboBox fx:id="cmbedit_nombre" layoutX="83.0" layoutY="14.0" prefWidth="150.0" />
+                  <TextField fx:id="cargoedit_monto" layoutX="83.0" layoutY="49.0" />
+                  <Label layoutX="42.0" layoutY="53.0" text="Monto:" />
+                  <Button layoutX="129.0" layoutY="84.0" mnemonicParsing="false" onAction="#btn_edit" prefHeight="33.0" prefWidth="58.0" text="Editar" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+   </children>
+</AnchorPane>

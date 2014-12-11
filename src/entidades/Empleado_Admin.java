@@ -20,6 +20,7 @@ public class Empleado_Admin {
     private Departamento departamento;
     private Cargo cargo;
     private TipoSalario tipoSalario;
+    private Estados estados;
 
     public Empleado_Admin(int id, String fecha_ingreso, int id_departamento, int id_cargo, int tipo_salario, String estado, Departamento departamento, Cargo cargo, TipoSalario tipoSalario) {
         this.id = id;
@@ -129,6 +130,16 @@ public class Empleado_Admin {
         this.tipoSalario = tipoSalario;
     }
 
+    public Estados getEstados() {
+        return estados;
+    }
+
+    public void setEstados(Estados estados) {
+        this.estados = estados;
+    }
+
+    
+    
     
     
 }
