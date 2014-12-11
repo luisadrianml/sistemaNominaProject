@@ -1,69 +1,313 @@
-use nomina1;
 
-create table estado_civil (id integer primary key, tipo varchar(25));
+-- -----------------------------------------------------
+-- Schema nomina1
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `nomina1` DEFAULT CHARACTER SET utf8 ;
+USE `nomina1` ;
 
-create table tipo_usuarios (id integer primary key, nombre varchar(20));
-
-create table usuarios(id integer auto_increment, usuario varchar(20) not null, clave varchar(50) not null, tipo_usuario integer, foreign key (tipo_usuario) references tipo_usuarios(id), unique (id), primary key (usuario));
-
-create table usuario_pers (id_usuario varchar(20) not null, nombre varchar(50) not null, apellido varchar(50) not null, correo varchar(100), foreign key (id_usuario) references usuarios(usuario) ON DELETE CASCADE);
-
--- Llenandoooo!
-
-insert into tipo_usuarios (id, nombre) values (1, 'Administrador');
-
-insert into tipo_usuarios (id, nombre) values (2, 'Contable');
-
-insert into usuarios (usuario, clave, tipo_usuario) values ('admin', '1234', 1);
-insert into usuario_pers values ('admin', 'Administrador', 'Doe', 'admin@administrador.com');
-
-
--- modulo de empresa
-
-create table empresa (id integer auto_increment, nombre varchar (25), rnc varchar(25), primary key (id));
-
-select * from empresa;
-insert into empresa values (1, 'CROOM', '101132671');
-
-create table tipo_salario (id integer, nombre varchar(25), factor decimal(5,2), primary key (id));
-
-create table departamento (id integer primary key, id_empresa integer, nombre varchar(25), 
-foreign key (id_empresa) references empresa(id));
-
-create table cargo (id integer, nombre varchar(25), primary key (id));
-
-create table cargo_salario (id_cargo integer, monto numeric, foreign key (id_cargo) references
-cargo(id));
-
-create table estados (id varchar(1) primary key, nombre varchar(25));
-
-create table empleado_admin (id integer, fecha_ingreso date, id_departamento integer, id_cargo integer, tipo_salario integer,
-id_estado varchar(1), foreign key (id_departamento) references departamento(id), foreign key (id_cargo) references cargo(id), foreign key (tipo_salario) references 
-tipo_salario(id), primary key (id), foreign key (id_estado) references estados(id));
-
-create table empleado_personal (id_empleado integer, cedula varchar(11) not null, nombre varchar(50),
-apellido varchar(50), direccion varchar(100), sexo enum ('m', 'f'), estado_civil enum ('soltero', 'divorciado','casado','viudo'), nacimiento date,
-email varchar(100), movil varchar(10), telefono varchar(10), foreign key (id_empleado) references empleado_admin(id));
+-- -----------------------------------------------------
+-- Table `nomina1`.`historico`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`historico` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `id_empleado` INT NOT NULL,
+  `mensaje` VARCHAR(245) NULL,
+  `creado_en` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
 
-create table dependientes (id integer auto_increment, id_empleado integer, nombre varchar(50), apellido varchar(50), cedula varchar(11) not null, tipo_dependiente enum ('hijo','conyuge','padre','madre','abuelo','abuela'), 
-foreign key (id_empleado) references empleado_admin(id), primary key (id));
+-- -----------------------------------------------------
+-- Table `nomina1`.`impuesto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`impuesto` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `desde_salario` DOUBLE NULL,
+  `hasta_salario` DOUBLE NULL,
+  `factor` VARCHAR(45) NULL,
+  `exceso` DOUBLE NULL,
+  `nombre` VARCHAR(50) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
-create table tipos_ingresos (id integer primary key, nombre varchar(20));
+USE `nomina1` ;
 
-create table tipos_descuentos(id integer primary key, nombre varchar(20));
+-- -----------------------------------------------------
+-- Table `nomina1`.`cargo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`cargo` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(25) NOT NULL,
+  `monto` DECIMAL(10,0) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
-create table ingresos_emp( id integer auto_increment primary key, id_empleado integer, tipo_ingreso integer, monto float(2), foreign key (id_empleado) references empleado_admin(id),
-foreign key (tipo_ingreso) references tipos_ingresos(id));
 
-create table deduccioness_emp( id integer auto_increment primary key, id_empleado integer, tipo_deduccion integer, monto float(2), estado varchar(1), foreign key (id_empleado) references empleado_admin(id),
-foreign key (tipo_deduccion) references tipos_descuentos(id), foreign key (estado) references estados(id));
+-- -----------------------------------------------------
+-- Table `nomina1`.`empresa`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`empresa` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(25) NULL DEFAULT NULL,
+  `rnc` VARCHAR(25) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
 
-create table mes (id integer primary key, nombre varchar(20));
 
-create table nomina (id integer auto_increment primary key, id_empleado integer, fecha datetime, s_ingresos float(2), s_deducciones float (2), s_neto float(2));
+-- -----------------------------------------------------
+-- Table `nomina1`.`departamento`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`departamento` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_empresa` INT(11) NULL DEFAULT NULL,
+  `nombre` VARCHAR(25) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `id_empresa` (`id_empresa` ASC),
+  CONSTRAINT `departamento_ibfk_1`
+    FOREIGN KEY (`id_empresa`)
+    REFERENCES `nomina1`.`empresa` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
--- el historico aun esta dudoso
-create table historico (id_empleado integer, id_trans_ingreso integer, id_trans_deduccion integer, fecha datetime, foreign key (id_empleado) references empleado_admin(id), foreign key (id_trans_ingreso) references ingresos_emp(id), foreign key (id_trans_deduccion) references deducciones_emp(id));
 
-create view cargo_monto as select cargo.id, cargo.nombre, cargo_salario.monto from cargo,cargo_salario where cargo.id = cargo_salario.id_cargo;
+-- -----------------------------------------------------
+-- Table `nomina1`.`tipo_salario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`tipo_salario` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(25) NULL DEFAULT NULL,
+  `factor` DECIMAL(5,2) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`estados`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`estados` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(25) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`empleado_admin`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`empleado_admin` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `fecha_ingreso` DATE NULL DEFAULT NULL,
+  `id_departamento` INT(11) NULL DEFAULT NULL,
+  `id_cargo` INT(11) NULL DEFAULT NULL,
+  `tipo_salario` INT(11) NULL DEFAULT NULL,
+  `id_estado` VARCHAR(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `id_departamento` (`id_departamento` ASC),
+  INDEX `id_cargo` (`id_cargo` ASC),
+  INDEX `tipo_salario` (`tipo_salario` ASC),
+  INDEX `id_estado` (`id_estado` ASC),
+  CONSTRAINT `empleado_admin_ibfk_1`
+    FOREIGN KEY (`id_departamento`)
+    REFERENCES `nomina1`.`departamento` (`id`),
+  CONSTRAINT `empleado_admin_ibfk_2`
+    FOREIGN KEY (`id_cargo`)
+    REFERENCES `nomina1`.`cargo` (`id`),
+  CONSTRAINT `empleado_admin_ibfk_3`
+    FOREIGN KEY (`tipo_salario`)
+    REFERENCES `nomina1`.`tipo_salario` (`id`),
+  CONSTRAINT `empleado_admin_ibfk_4`
+    FOREIGN KEY (`id_estado`)
+    REFERENCES `nomina1`.`estados` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`tipos_descuentos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`tipos_descuentos` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`deduccioness_emp`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`deduccioness_emp` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_empleado` INT(11) NULL DEFAULT NULL,
+  `tipo_deduccion` INT(11) NULL DEFAULT NULL,
+  `monto` FLOAT NULL DEFAULT NULL,
+  `estado` VARCHAR(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `id_empleado` (`id_empleado` ASC),
+  INDEX `tipo_deduccion` (`tipo_deduccion` ASC),
+  INDEX `estado` (`estado` ASC),
+  CONSTRAINT `deduccioness_emp_ibfk_1`
+    FOREIGN KEY (`id_empleado`)
+    REFERENCES `nomina1`.`empleado_admin` (`id`),
+  CONSTRAINT `deduccioness_emp_ibfk_2`
+    FOREIGN KEY (`tipo_deduccion`)
+    REFERENCES `nomina1`.`tipos_descuentos` (`id`),
+  CONSTRAINT `deduccioness_emp_ibfk_3`
+    FOREIGN KEY (`estado`)
+    REFERENCES `nomina1`.`estados` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`dependientes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`dependientes` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_empleado` INT(11) NULL DEFAULT NULL,
+  `nombre` VARCHAR(50) NULL DEFAULT NULL,
+  `apellido` VARCHAR(50) NULL DEFAULT NULL,
+  `cedula` VARCHAR(11) NOT NULL,
+  `tipo_dependiente` ENUM('hijo','conyuge','padre','madre','abuelo','abuela') NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `id_empleado` (`id_empleado` ASC),
+  CONSTRAINT `dependientes_ibfk_1`
+    FOREIGN KEY (`id_empleado`)
+    REFERENCES `nomina1`.`empleado_admin` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`empleado_personal`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`empleado_personal` (
+  `id_empleado` INT NOT NULL AUTO_INCREMENT,
+  `cedula` VARCHAR(11) NOT NULL,
+  `nombre` VARCHAR(50) NULL DEFAULT NULL,
+  `apellido` VARCHAR(50) NULL DEFAULT NULL,
+  `direccion` VARCHAR(100) NULL DEFAULT NULL,
+  `sexo` ENUM('m','f') NULL DEFAULT NULL,
+  `estado_civil` ENUM('soltero','divorciado','casado','viudo') NULL DEFAULT NULL,
+  `nacimiento` DATE NULL DEFAULT NULL,
+  `email` VARCHAR(100) NULL DEFAULT NULL,
+  `movil` VARCHAR(10) NULL DEFAULT NULL,
+  `telefono` VARCHAR(10) NULL DEFAULT NULL,
+  INDEX `id_empleado` (`id_empleado` ASC),
+  PRIMARY KEY (`id_empleado`),
+  CONSTRAINT `empleado_personal_ibfk_1`
+    FOREIGN KEY (`id_empleado`)
+    REFERENCES `nomina1`.`empleado_admin` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`estado_civil`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`estado_civil` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `tipo` VARCHAR(25) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`tipos_ingresos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`tipos_ingresos` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`ingresos_emp`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`ingresos_emp` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_empleado` INT(11) NULL DEFAULT NULL,
+  `tipo_ingreso` INT(11) NULL DEFAULT NULL,
+  `monto` FLOAT NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `id_empleado` (`id_empleado` ASC),
+  INDEX `tipo_ingreso` (`tipo_ingreso` ASC),
+  CONSTRAINT `ingresos_emp_ibfk_1`
+    FOREIGN KEY (`id_empleado`)
+    REFERENCES `nomina1`.`empleado_admin` (`id`),
+  CONSTRAINT `ingresos_emp_ibfk_2`
+    FOREIGN KEY (`tipo_ingreso`)
+    REFERENCES `nomina1`.`tipos_ingresos` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`mes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`mes` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`tipo_usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`tipo_usuarios` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`usuarios`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`usuarios` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `usuario` VARCHAR(20) NOT NULL,
+  `clave` VARCHAR(50) NOT NULL,
+  `tipo_usuario` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`usuario`),
+  UNIQUE INDEX `id` (`id` ASC),
+  INDEX `tipo_usuario` (`tipo_usuario` ASC),
+  CONSTRAINT `usuarios_ibfk_1`
+    FOREIGN KEY (`tipo_usuario`)
+    REFERENCES `nomina1`.`tipo_usuarios` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `nomina1`.`usuario_pers`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nomina1`.`usuario_pers` (
+  `id_usuario` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(50) NOT NULL,
+  `apellido` VARCHAR(50) NOT NULL,
+  `correo` VARCHAR(100) NULL DEFAULT NULL,
+  INDEX `id_usuario` (`id_usuario` ASC),
+  CONSTRAINT `usuario_pers_ibfk_1`
+    FOREIGN KEY (`id_usuario`)
+    REFERENCES `nomina1`.`usuarios` (`usuario`)
+    ON DELETE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+USE `nomina1` ;
+
+

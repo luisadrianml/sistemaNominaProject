@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mySql;
+package mysql;
 
 
 import java.sql.*;
@@ -19,7 +19,7 @@ public class MySqlDataBase {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             url="jdbc:mysql://localhost:3306/nomina1";
-            conn = DriverManager.getConnection(url,"root","");
+            conn = DriverManager.getConnection(url,"root","1234");
             System.out.println("Se ha conectado la Base de Datos "+url+".........Ok");
  
         
