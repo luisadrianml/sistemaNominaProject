@@ -119,3 +119,5 @@ insert into tipos_ingresos values ('HORAS_EXTRAS');
 select * from tipos_descuentos;
 
 select empleado_admin.id, empleado_personal.nombre, empleado_personal.apellido,empleado_admin.id_estado from empleado_admin, empleado_personal where empleado_admin.id = empleado_personal.id_empleado and empleado_admin.id_estado = 1;
+
+
