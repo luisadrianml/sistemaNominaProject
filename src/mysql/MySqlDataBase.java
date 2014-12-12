@@ -193,6 +193,26 @@ public class MySqlDataBase {
             return rs;
         }
         
+        
+                public ResultSet Select(String column_from_tables, String table, String where) {
+        
+                ResultSet rs=null;
+            
+            try{
+                Statement s = conn.createStatement();
+                
+                rs = s.executeQuery("select "+column_from_tables+" from "+table+" where "
+                        +where);
+                
+            }catch(SQLException ex){
+                System.out.println(ex);
+                System.out.println("select "+column_from_tables+" from "+table+" where "
+                        +where);
+            }
+            
+            return rs;
+        }
+        
         public void Call(String procedure){
             try{
                 CallableStatement callSt = conn.prepareCall(procedure);

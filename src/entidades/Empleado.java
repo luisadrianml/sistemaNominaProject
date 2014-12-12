@@ -21,6 +21,7 @@ public class Empleado {
     private String email;
     private String telefono;
     private String movil;
+    private int estado;
     
     private Sexo sex;
     private EstadoCivil estadocvil;
@@ -28,7 +29,7 @@ public class Empleado {
     public Sexo getSex() {
         return sex;
     }
-
+    
     public void setSex(Sexo sex) {
         this.sex = sex;
     }

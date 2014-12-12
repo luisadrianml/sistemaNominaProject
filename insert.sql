@@ -11,6 +11,7 @@ insert into cargo(nombre,monto) values('CTO.7',1000000);
 select * from impuesto;
 
 
+
 insert into impuesto(nombre,factor) values('SFS',0.0304);
 insert into impuesto(nombre,factor) values('AFP',0.0287);
 insert into impuesto(nombre,factor,desde_salario,hasta_salario) values('ISR-Primer Rango',0,0,399923.00 );
@@ -65,7 +66,7 @@ insert into ingresos_emp(id_empleado,tipo_ingreso,monto) values(3,1,500);
 insert into ingresos_emp(id_empleado,tipo_ingreso,monto) values(1,1,1500);
 insert into ingresos_emp(id_empleado,tipo_ingreso,monto) values(2,1,500);
 insert into ingresos_emp(id_empleado,tipo_ingreso,monto) values(3,1,500);
-insert into ingresos_emp(id_empleado,tipo_ingreso,monto) values(4,1,500);
+insert into ingresos_emp(id_empleado,tipo_ingreso,monto) values(4,1,700);
 insert into ingresos_emp(id_empleado,tipo_ingreso,monto) values(5,1,500);
 insert into ingresos_emp(id_empleado,tipo_ingreso,monto) values(6,1,500);
 insert into ingresos_emp(id_empleado,tipo_ingreso,monto) values(7,1,500);
@@ -103,5 +104,18 @@ insert into usuario_pers values ('luis', 'luisa','martinez','lm@outlook.com');
 select * from tipo_usuarios;
 select * from empresa;
 
+select max(id) from empleado_admin;
 
-select max(id) from empleado_admin
+select tipos_ingresos.nombre, ingresos_emp.tipo_ingreso, ingresos_emp.monto, ingresos_emp.id_empleado,ingresos_emp.id from tipos_ingresos,ingresos_emp where tipos_ingresos.id = ingresos_emp.tipo_ingreso and ingresos_emp.id_empleado = 4;
+
+select tipos_descuentos.nombre, deduccioness_emp.tipo_deduccion, deduccioness_emp.monto, deduccioness_emp.id_empleado, deduccioness_emp.id, deduccioness_emp.estado 
+from tipos_descuentos, deduccioness_emp 
+where tipos_descuentos.id = deduccioness_emp.tipo_deduccion and deduccioness_emp.id_empleado = 4;
+
+
+insert into tipos_ingresos values ('Ingreso 1');
+insert into tipos_ingresos values ('HORAS_EXTRAS');
+
+select * from tipos_descuentos;
+
+select empleado_admin.id, empleado_personal.nombre, empleado_personal.apellido,empleado_admin.id_estado from empleado_admin, empleado_personal where empleado_admin.id = empleado_personal.id_empleado;
