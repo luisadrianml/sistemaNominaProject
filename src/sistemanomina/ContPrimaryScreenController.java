@@ -36,13 +36,7 @@ public class ContPrimaryScreenController implements Initializable {
             root2 = FXMLLoader.load(getClass().getResource("/vistas/AddEmployee.fxml"));
             Scene scene = new Scene(root2);
             stage1.setScene(scene);
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/AddEmployee.fxml"));
-            
-            loader.load();
-            AddEmployeeController controller = loader.getController();
-            controller.test("prueba");
-            
+  
             stage1.show();
             
             
@@ -103,17 +97,80 @@ public class ContPrimaryScreenController implements Initializable {
     
     @FXML
     void btn_Departamentos(ActionEvent event) {
-
+        try {
+            Stage stage1 = new Stage();
+            Parent root2;
+            root2 = FXMLLoader.load(getClass().getResource("/vistas/AddDepartamentos.fxml"));
+            Scene scene = new Scene(root2);
+            stage1.setScene(scene);
+            stage1.show();
+            
+            
+            // cerrar ventana actual
+            Node source = (Node) event.getSource();
+            Stage stage = (Stage) source.getScene().getWindow();
+            stage.hide();
+            
+            stage1.setOnCloseRequest((WindowEvent we) -> {
+                System.out.println("Closing APP");
+                stage.show();
+                
+            });
+        } catch (IOException ex) {
+            Logger.getLogger(ContPrimaryScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     void btn_Cargos(ActionEvent event) {
-
+        try {
+            Stage stage1 = new Stage();
+            Parent root2;
+            root2 = FXMLLoader.load(getClass().getResource("/vistas/AddCargos.fxml"));
+            Scene scene = new Scene(root2);
+            stage1.setScene(scene);
+            stage1.show();
+            
+            
+            // cerrar ventana actual
+            Node source = (Node) event.getSource();
+            Stage stage = (Stage) source.getScene().getWindow();
+            stage.hide();
+            
+            stage1.setOnCloseRequest((WindowEvent we) -> {
+                System.out.println("Closing APP");
+                stage.show();
+                
+            });
+        } catch (IOException ex) {
+            Logger.getLogger(ContPrimaryScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     void btn_Novedades(ActionEvent event) {
-
+     try {
+            Stage stage1 = new Stage();
+            Parent root2;
+            root2 = FXMLLoader.load(getClass().getResource("/vistas/Novedades.fxml"));
+            Scene scene = new Scene(root2);
+            stage1.setScene(scene);
+            stage1.show();
+            
+            
+            // cerrar ventana actual
+            Node source = (Node) event.getSource();
+            Stage stage = (Stage) source.getScene().getWindow();
+            stage.hide();
+            
+            stage1.setOnCloseRequest((WindowEvent we) -> {
+                System.out.println("Closing APP");
+                stage.show();
+                
+            });
+        } catch (IOException ex) {
+            Logger.getLogger(ContPrimaryScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**

@@ -24,6 +24,10 @@ public class Empresa {
     public Empresa() {
         //Empty constructor
     }
+    
+     public Empresa(int id) {
+        this.ID = id;
+    }
 
     public int getID() {
         return ID;

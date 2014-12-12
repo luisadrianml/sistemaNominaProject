@@ -18,7 +18,7 @@ public class Tests {
 
         Nomina nomina = ManejadorNomina.generarNomina(emp);
         System.out.println(nomina);
-
+        System.out.println(""+ManejadorNomina.getNetoAPagar(nomina)+"hola");
         System.out.println("------------------");
         System.out.println( "AFP="+ManejadorNomina.calculaAFP(nomina) +" : SFS="+ ManejadorNomina.calculaSFS(nomina) +" : ISR="+ManejadorNomina.calculaISR(nomina) );
 

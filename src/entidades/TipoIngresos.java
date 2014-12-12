@@ -9,32 +9,17 @@ package entidades;
  *
  * @author pc167
  */
-public class Departamento extends Empresa {
+public class TipoIngresos {
     private int id;
     private String nombre;
-    
-    
-    public Departamento(int id, String nombre, int idEmpresa) {
-        super(idEmpresa);
-        this.nombre = nombre;
+
+    public TipoIngresos(int id, String nombre) {
         this.id = id;
-
-    }
-    
-    public Departamento(int id, String nombre) {
         this.nombre = nombre;
+    }
+
+    public TipoIngresos(int id) {
         this.id = id;
-
-    }
-
-    @Override
-    public String getNombre() {
-        return nombre;
-    }
-
-    @Override
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public int getId() {
@@ -44,10 +29,19 @@ public class Departamento extends Empresa {
     public void setId(int id) {
         this.id = id;
     }
-    
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Override
     public String toString() {
         return this.nombre;
     }
     
+    
 }
-

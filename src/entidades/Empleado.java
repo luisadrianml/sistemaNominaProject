@@ -168,6 +168,11 @@ public class Empleado {
         this.movil = movil;
     }
 
+    @Override
+    public String toString() {
+        return this.ID_empleado+"";
+    }
+
     
     
 }

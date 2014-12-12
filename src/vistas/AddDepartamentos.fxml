@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="268.0" prefWidth="285.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemanomina.AddDepartamentosController">
+   <children>
+      <TitledPane collapsible="false" prefHeight="121.0" prefWidth="285.0" text="Crear departamento">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="126.0" prefWidth="247.0">
+               <children>
+                  <Label layoutX="33.0" layoutY="20.0" text="Nombre:" />
+                  <Button layoutX="128.0" layoutY="51.0" mnemonicParsing="false" onAction="#btn_crear_dep" prefHeight="33.0" prefWidth="58.0" text="Crear" />
+                  <TextField fx:id="departcrear_nombre" layoutX="82.0" layoutY="16.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutY="121.0" prefHeight="148.0" prefWidth="285.0" text="Editar departamento">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="143.0" prefWidth="283.0">
+               <children>
+                  <Label layoutX="34.0" layoutY="18.0" text="Nombre:" />
+                  <ComboBox fx:id="cmbDPedit_nombre" layoutX="83.0" layoutY="14.0" prefWidth="150.0" />
+                  <Button layoutX="129.0" layoutY="82.0" mnemonicParsing="false" onAction="#btn_edit_dp" prefHeight="33.0" prefWidth="58.0" text="Editar" />
+                  <TextField fx:id="txt_nombre" layoutX="84.0" layoutY="48.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+   </children>
+</AnchorPane>

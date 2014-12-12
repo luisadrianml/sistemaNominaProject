@@ -337,7 +337,7 @@ public class EditEmployeeController implements Initializable {
     private void gettingDataforCargo() {
           arrayCargo = new ArrayList<>();
  //       arrayEmp.clear();
-        ResultSet rs = database.Select("*","cargo_monto");
+        ResultSet rs = database.Select("*","cargo");
         
         try{
             while(rs.next()){
@@ -448,7 +448,7 @@ public class EditEmployeeController implements Initializable {
         try{
             while(rs.next()){
                 ResultSet rsDP = database.Select("*", "departamento", "id", ""+rs.getInt("id_departamento"));
-                ResultSet rsCG = database.Select("*", "cargo_monto", "id", ""+rs.getInt("id_cargo"));
+                ResultSet rsCG = database.Select("*", "cargo", "id", ""+rs.getInt("id_cargo"));
                 ResultSet rsTS = database.Select("*", "tipo_salario", "id", ""+rs.getInt("tipo_salario"));
                 
                 Departamento dp = null;

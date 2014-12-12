@@ -34,6 +34,9 @@ insert into departamento(id_empresa,nombre) values(2,'IT');
 
 select * from estados;
 insert into estados(nombre) values('activo');
+insert into estados(nombre) values('inactivo');
+
+
 
 
 select * from empleado_admin;
@@ -83,6 +86,7 @@ insert into deduccioness_emp(id_empleado,tipo_deduccion,monto,estado) values(2,1
 insert into deduccioness_emp(id_empleado,tipo_deduccion,monto,estado) values(3,1,200,1);
 insert into deduccioness_emp(id_empleado,tipo_deduccion,monto,estado) values(4,1,200,1);
 
+select*from empresa;
 insert into empresa(nombre,rnc) values ('CROOM', '101027797');
 
 
@@ -99,9 +103,5 @@ insert into usuario_pers values ('luis', 'luisa','martinez','lm@outlook.com');
 select * from tipo_usuarios;
 select * from empresa;
 
-select LAST_INSERT_ID()  from empleado_admin;
 
 select max(id) from empleado_admin
-
-select * from empleado_personal
-

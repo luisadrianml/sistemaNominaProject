@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="366.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sistemanomina.NovedadesController">
+   <children>
+      <TabPane prefHeight="404.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="tabIngresos" text="Ingresos">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="343.0" prefWidth="600.0">
+                     <children>
+                        <TableView fx:id="table_ingresos" layoutY="51.0" prefHeight="184.0" prefWidth="600.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                        <TextField fx:id="txt_monto_ingreso" layoutX="374.0" layoutY="14.0" prefHeight="25.0" prefWidth="100.0" />
+                        <ComboBox fx:id="cmb_ID_ingresos" layoutX="45.0" layoutY="14.0" prefHeight="25.0" prefWidth="71.0" />
+                        <Label layoutX="28.0" layoutY="18.0" text="ID:" />
+                        <ComboBox fx:id="cmb_tipo_ingresos" layoutX="163.0" layoutY="14.0" prefWidth="150.0" />
+                        <Label layoutX="135.0" layoutY="18.0" text="Tipo:" />
+                        <Label layoutX="333.0" layoutY="18.0" text="Monto:" />
+                        <Button fx:id="btn_agregar_ingresos" layoutX="527.0" layoutY="14.0" mnemonicParsing="false" text="Agregar" />
+                        <TitledPane animated="false" collapsible="false" layoutY="271.0" prefHeight="105.0" prefWidth="600.0" text="Tipo de ingresos">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="txt_nombre_tipoingresos" layoutX="65.0" layoutY="27.0" />
+                                    <Label layoutX="14.0" layoutY="31.0" text="Nombre:" />
+                                    <Button fx:id="btn_agregar_tipoingresos" layoutX="225.0" layoutY="27.0" mnemonicParsing="false" text="Agregar" />
+                                    <Label layoutX="314.0" layoutY="31.0" text="Nombre:" />
+                                    <ComboBox fx:id="cmb_tipoingresos" layoutX="365.0" layoutY="27.0" prefWidth="150.0" />
+                                    <Button fx:id="btn_borrar_ingreso" disable="true" layoutX="525.0" layoutY="27.0" mnemonicParsing="false" text="Borrar" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </TitledPane>
+                        <Button disable="true" layoutX="531.0" layoutY="241.0" mnemonicParsing="false" text="Borrar" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="tabDeducciones" text="Deducciones">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="390.0" prefWidth="600.0">
+                           <children>
+                              <TableView fx:id="table_deducciones" layoutY="51.0" prefHeight="184.0" prefWidth="600.0">
+                                 <columns>
+                                    <TableColumn prefWidth="75.0" text="C1" />
+                                    <TableColumn prefWidth="75.0" text="C2" />
+                                 </columns>
+                              </TableView>
+                              <TextField fx:id="txt_monto_deducciones" layoutX="374.0" layoutY="14.0" prefHeight="25.0" prefWidth="100.0" />
+                              <ComboBox fx:id="cmb_ID_deducciones" layoutX="45.0" layoutY="14.0" prefHeight="25.0" prefWidth="71.0" />
+                              <Label layoutX="28.0" layoutY="18.0" text="ID:" />
+                              <ComboBox fx:id="cmb_tipo_deducciones" layoutX="163.0" layoutY="14.0" prefWidth="150.0" />
+                              <Label layoutX="135.0" layoutY="18.0" text="Tipo:" />
+                              <Label layoutX="333.0" layoutY="18.0" text="Monto:" />
+                              <Button layoutX="527.0" layoutY="14.0" mnemonicParsing="false" onAction="#btn_deducciones_agregar" text="Agregar" />
+                              <Button disable="true" layoutX="531.0" layoutY="241.0" mnemonicParsing="false" text="Borrar" />
+                              <TitledPane animated="false" collapsible="false" layoutY="271.0" prefHeight="105.0" prefWidth="600.0" text="Tipo de ingresos">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TextField fx:id="txt_nombre_tipodeduccion" layoutX="65.0" layoutY="27.0" />
+                                          <Label layoutX="14.0" layoutY="31.0" text="Nombre:" />
+                                          <Button fx:id="btn_tipodeduc_agregar" layoutX="225.0" layoutY="27.0" mnemonicParsing="false" text="Agregar" />
+                                          <Label layoutX="314.0" layoutY="31.0" text="Nombre:" />
+                                          <ComboBox fx:id="cmb_tipodeduc" layoutX="365.0" layoutY="27.0" prefWidth="150.0" />
+                                          <Button fx:id="btn_borrar_tipodeduc" disable="true" layoutX="525.0" layoutY="27.0" mnemonicParsing="false" text="Borrar" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </TitledPane>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

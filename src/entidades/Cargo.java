@@ -45,7 +45,7 @@ public class Cargo extends Empresa {
     }
     
     public String toString() {
-        return this.nombre;
+        return this.nombre.substring(0,1).toUpperCase() + this.nombre.substring(1);
     }
     
     public void setSalario(float salario) {

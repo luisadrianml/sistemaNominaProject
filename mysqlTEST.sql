@@ -370,7 +370,6 @@ PRIMARY KEY (id_usuario))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-create view ultimo_empleado_id as select last_insert_id() ultimo from empleado_admin;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
