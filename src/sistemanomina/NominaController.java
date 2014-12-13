@@ -5,12 +5,17 @@
  */
 package sistemanomina;
 
+import entidades.Deduccion;
 import entidades.Empleado;
+import entidades.Ingreso;
+import java.io.File;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,6 +54,12 @@ public class NominaController implements Initializable {
             
             Nomina nomina = ManejadorNomina.generarNomina(empleado);
             
+            nomina.getAFP();
+            ManejadorNomina.calculaAFP(nomina);
+            ManejadorNomina.calculaSFS(nomina);
+            ManejadorNomina.calculaISR(nomina);
+            nomina.getSFS();
+            
             Comprobante cmp = new Comprobante();
             cmp.setId_employee(empleado.getID_empleado());
             cmp.setName_employee(empleado.getNombre());
@@ -57,12 +68,30 @@ public class NominaController implements Initializable {
             cmp.createandheaderPDF();
             
             cmp.createTable();
-            cmp.llenarIngresos(nomina.getIngresos().get(0).getMonto(), nomina.getIngresos().get(0).getNombre());
-            cmp.llenarDeduccion(nomina.getDeducciones().get(0).getMonto(), nomina.getDeducciones().get(0).getNombre());
-            cmp.neto(nomina.getSalario());
+            
+            for (Ingreso ingreso : nomina.getIngresos()) {
+                cmp.llenarIngresos(ingreso.getMonto(), ingreso.getNombre());
+            }
+            
+            Double totalIngresos = 0.0;
+            for (Ingreso ingreso : nomina.getIngresos()) {
+                totalIngresos += ingreso.getMonto();
+            }
+            cmp.totalIngresos(totalIngresos);
+            
+            for (Deduccion deduccion : nomina.getDeducciones()) {
+                cmp.llenarDeduccion(deduccion.getMonto(), deduccion.getNombre());
+            }
+           // cmp.llenarDeduccion(nomina.getDeducciones().get(0).getMonto(), nomina.getDeducciones().get(0).getNombre());
+            Double totalDeduccion = 0.0;
+            for (Deduccion deduccion : nomina.getDeducciones()) {
+                totalDeduccion += deduccion.getMonto();
+            }
+            cmp.totalDeducciones(totalDeduccion);
+            cmp.neto(ManejadorNomina.getNetoAPagar(nomina));
             
             cmp.cerrarDoc();
-            System.out.println(ManejadorNomina.getNetoAPagar(nomina));
+            cmp.abrirPDF();
         }
     }
 
@@ -77,6 +106,15 @@ public class NominaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         llenarIDEmpleado();
+        
+        cmb_ID_nomina.valueProperty().addListener(new ChangeListener<Empleado>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Empleado> observable, Empleado oldValue, Empleado newValue) {
+                empleado = newValue;
+            }
+            
+        });
     }    
     
     void llenarIDEmpleado() {
@@ -99,5 +137,7 @@ public class NominaController implements Initializable {
         listEmpleado = FXCollections.observableArrayList(arrayEmp);
         cmb_ID_nomina.setItems(listEmpleado);
     }
+    
+
     
 }

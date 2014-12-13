@@ -15,8 +15,10 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
@@ -198,17 +200,20 @@ public class Comprobante {
         pdfTable.addCell(nombre);
         pdfTable.addCell(ingreso.toString());
         pdfTable.addCell("");
+        pdfTable.addCell("");
     }
     
     public void llenarDeduccion(Double deducc, String nombre) {
         pdfTable.addCell(nombre);
         pdfTable.addCell("");
         pdfTable.addCell(deducc.toString());
+        pdfTable.addCell("");
     }
     
     public void totalIngresos(Double tingreso) {
         pdfTable.addCell("Total de ingresos:");
         pdfTable.addCell(tingreso.toString());
+        pdfTable.addCell("");
         pdfTable.addCell("");
     }
     
@@ -216,12 +221,27 @@ public class Comprobante {
         pdfTable.addCell("Total de deducciones:");
         pdfTable.addCell("");
         pdfTable.addCell(tdeduc.toString());
+        pdfTable.addCell("");
     }
     
     public void neto(Double neto) {
         pdfTable.addCell("Total a pagar");
         pdfTable.addCell("");
+        pdfTable.addCell("");
         pdfTable.addCell(neto.toString());
+    }
+    
+    public void fillNecesario(String first, String second, String third, String four) {
+        
+    }
+    
+    public void abrirPDF() {
+        try {
+            File path = new File(FILE);
+            Desktop.getDesktop().open(path);
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
     }
     
 

@@ -75,7 +75,8 @@ public final class ManejadorNomina {
     }
 
     public static Double getOtrosDeducibles(Nomina nomina){
-        Double montoTotal = nomina.getSalario();
+        // Double montoTotal = nomina.getSalario();
+        Double montoTotal = 0.0;
         if( null != nomina.getDeducciones() ){
             for( Deduccion deduccion : nomina.getDeducciones() ){
                 montoTotal += deduccion.getMonto();
