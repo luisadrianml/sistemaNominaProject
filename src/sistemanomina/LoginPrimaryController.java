@@ -16,6 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -73,6 +75,9 @@ public class LoginPrimaryController implements Initializable {
             root = FXMLLoader.load(getClass().getResource("/vistas/ContPrimaryScreen.fxml"));
             Scene scene = new Scene(root);
             stage1.setScene(scene);
+            stage1.setMaxWidth(600);
+            stage1.setMinHeight(394);
+            stage1.setResizable(false);
             stage1.show();
             
             // cerrar ventana actual
@@ -91,6 +96,11 @@ public class LoginPrimaryController implements Initializable {
     void hBClean(ActionEvent event) {
          text_pass.clear();
          text_user.clear();
+         
+         Node source = (Node) event.getSource();
+         Dialogs dg = new Dialogs((Stage) source.getScene().getWindow());
+         dg.informationDialog("Boton de limpiar", "Presionado boton", "Se supone que tiene icono del login");
+         
 
     }
     

@@ -20,6 +20,11 @@ public class TipoSalario {
         this.factor = factor;
     }
     
+        public TipoSalario(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+    
     public int getId() {
         return id;
     }

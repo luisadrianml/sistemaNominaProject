@@ -200,6 +200,7 @@ public class AddEmployeeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         database.getConn();
+        Validation.asignEventHandler(empleado_nombre, 1, 0);
         llenarComboBox();
         setID();
         

@@ -118,8 +118,17 @@ insert into tipos_ingresos values ('HORAS_EXTRAS');
 
 select * from tipos_descuentos;
 
-select empleado_admin.id, empleado_personal.nombre, empleado_personal.apellido,empleado_admin.id_estado from empleado_admin, empleado_personal where empleado_admin.id = empleado_personal.id_empleado and empleado_admin.id_estado = 1;
+select empleado_admin.id, empleado_personal.nombre, empleado_personal.apellido,empleado_admin.id_estado from empleado_admin, empleado_personal where empleado_admin.id = empleado_personal.id_empleado and empleado_admin.id_estado = 1 and empleado_admin.tipo_salario=1;
 
-SELECT NOMBRE,MONTO FROM EMPLEADO_ADMIN EA JOIN CARGO C ON EA.ID_CARGO = C.ID WHERE EA.ID = 9
+SELECT NOMBRE,MONTO FROM EMPLEADO_ADMIN EA JOIN CARGO C ON EA.ID_CARGO = C.ID WHERE EA.ID = 9;
 
-select ti.nombre ingreso, ie.monto from ingresos_emp ie join tipos_ingresos ti on ie.tipo_ingreso = ti.id where ie.id_empleado = 9
+select ti.nombre ingreso, ie.monto from ingresos_emp ie join tipos_ingresos ti on ie.tipo_ingreso = ti.id where ie.id_empleado = 9;
+
+select * from tipo_salario;
+
+insert into tipo_salario(nombre, factor) values ('quincenal', 11.91);
+
+update tipo_salario set factor = 23.83 where id = 1;
+
+insert into tipo_salario(nombre,factor) values ('semana', 5.5);
+insert into tipo_salario(nombre,factor) values ('hora', 8);

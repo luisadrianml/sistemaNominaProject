@@ -21,12 +21,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import sistemanomina.Dialogs;
 
 /**
  *
  * @author pc167
  */
 public class Comprobante {
+    Dialogs dg;
     private  int id_employee = 130980;
     private  String name_employee = "Richard";
     private  String ced_employee = "001-0000000-1";
@@ -128,7 +135,7 @@ public class Comprobante {
         this.pdfTable = pdfTable;
     }
 
-    public void createandheaderPDF() {
+    public void createandheaderPDF(ActionEvent event) {
         FILE = "C:\\Nomina\\Comprobante_Nomina_"+id_employee+".pdf";
         try{
                 File filePDF = new File(FILE);
@@ -157,6 +164,10 @@ public class Comprobante {
             
         } catch(Exception e){
             e.printStackTrace();
+            if(e.toString().startsWith("java.io.FileNotFoundException:")) {
+                dg = new Dialogs( (Stage) ((Node) event.getSource()).getScene().getWindow());
+                dg.exceptionDialog("Error - archivo pdf", "Errores encontrados", "El archivo no se ha podido crear por problemas de permisos, o esta en uso.", e);
+            }
         }
     
         
@@ -188,7 +199,8 @@ public class Comprobante {
     public void cerrarDoc() {
         try {
             document.add(pdfTable);
-                
+            document.addAuthor("Sistema de Nomina - LJ");
+            document.addTitle("compapapapa");
             document.close();
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -211,24 +223,31 @@ public class Comprobante {
     }
     
     public void totalIngresos(Double tingreso) {
+        pdfTable.getDefaultCell().setBackgroundColor(BaseColor.YELLOW);
         pdfTable.addCell("Total de ingresos:");
         pdfTable.addCell(tingreso.toString());
         pdfTable.addCell("");
         pdfTable.addCell("");
+        pdfTable.getDefaultCell().setBackgroundColor(null);
+        
     }
     
     public void totalDeducciones(Double tdeduc) {
+        pdfTable.getDefaultCell().setBackgroundColor(BaseColor.YELLOW);
         pdfTable.addCell("Total de deducciones:");
         pdfTable.addCell("");
         pdfTable.addCell(tdeduc.toString());
         pdfTable.addCell("");
+        pdfTable.getDefaultCell().setBackgroundColor(null);
     }
     
     public void neto(Double neto) {
+        pdfTable.getDefaultCell().setBackgroundColor(BaseColor.RED);
         pdfTable.addCell("Total a pagar");
         pdfTable.addCell("");
         pdfTable.addCell("");
         pdfTable.addCell(neto.toString());
+        pdfTable.getDefaultCell().setBackgroundColor(null);
     }
     
     public void fillNecesario(String first, String second, String third, String four) {
