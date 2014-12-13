@@ -120,3 +120,6 @@ select * from tipos_descuentos;
 
 select empleado_admin.id, empleado_personal.nombre, empleado_personal.apellido,empleado_admin.id_estado from empleado_admin, empleado_personal where empleado_admin.id = empleado_personal.id_empleado and empleado_admin.id_estado = 1;
 
+SELECT NOMBRE,MONTO FROM EMPLEADO_ADMIN EA JOIN CARGO C ON EA.ID_CARGO = C.ID WHERE EA.ID = 9
+
+select ti.nombre ingreso, ie.monto from ingresos_emp ie join tipos_ingresos ti on ie.tipo_ingreso = ti.id where ie.id_empleado = 9
