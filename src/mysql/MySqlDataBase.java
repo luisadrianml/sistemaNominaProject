@@ -7,6 +7,8 @@ package mysql;
 
 
 import java.sql.*;
+import javafx.application.Platform;
+import sistemanomina.Dialogs;
 
 
 public class MySqlDataBase {
@@ -25,7 +27,11 @@ public class MySqlDataBase {
         
         }catch(SQLException ex){
 
-            System.out.println(ex);
+            if (ex.toString().startsWith("com.mysql.jdbc.exceptions.jdbc4.CommunicationsException")) {
+                Dialogs dg = new Dialogs();  
+                dg.errorDialog("Error con base de datos", "Problemas con la base de datos", "Se ha encontrado un problema con la base de datos, donde no se ha podido conectar. Reinicie.");
+                Platform.exit();
+            }
                 
          }catch(ClassNotFoundException ex){
 
@@ -116,7 +122,7 @@ public class MySqlDataBase {
             return rs;
         }
         
-        public ResultSet Update(String table, String set_values, String where_type, String where_value){
+        public ResultSet Update(String table, String set_values, String where_type, String where_value) {
             
             ResultSet rs=null;
             
@@ -125,7 +131,7 @@ public class MySqlDataBase {
        
                 s.executeUpdate("UPDATE "+table+" SET "+set_values+" WHERE "+where_type+" = '"+where_value+"'");
                 
-            }catch(SQLException ex){
+            } catch(SQLException ex){
                 System.out.println(ex);
                 System.out.println("UPDATE "+table+" SET "+set_values+" WHERE "+where_type+" = '"+where_value+"'");
             }

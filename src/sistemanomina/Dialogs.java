@@ -9,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -31,6 +33,16 @@ public class Dialogs {
         this.stage = stage;
         alert = new Alert(AlertType.NONE);
         alert.initOwner(stage);
+    }
+    
+    public Dialogs(ActionEvent event) {
+        this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        alert = new Alert(AlertType.NONE);
+        alert.initOwner(stage);
+    }
+    
+    public Dialogs() {
+        alert = new Alert(AlertType.NONE);
     }
 
     public Stage getStage() {
@@ -85,6 +97,35 @@ public class Dialogs {
 
         alert.showAndWait();
     }
+    
+    public void longDialog(String title, String header, String content) {
+        alert.setAlertType(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(null);
+
+
+        Label label = new Label("El seguimiento del error fue:");
+
+        TextArea textArea = new TextArea(content);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+        GridPane.setVgrow(textArea, Priority.ALWAYS);
+        GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+        GridPane expContent = new GridPane();
+        expContent.setMaxWidth(Double.MAX_VALUE);
+        expContent.add(textArea, 0, 0);
+
+        // Set expandable Exception into the dialog pane.
+        alert.getDialogPane().setContent(expContent);
+
+        alert.showAndWait();
+    }
+    
     
     public void exceptionDialog(String title, String header, String content, Exception ex) {
         alert.setAlertType(AlertType.ERROR);

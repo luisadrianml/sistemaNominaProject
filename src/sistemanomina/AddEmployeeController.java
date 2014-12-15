@@ -17,9 +17,11 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,10 +32,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 
 /**
@@ -44,7 +48,7 @@ import mysql.MySqlDataBase;
 public class AddEmployeeController implements Initializable {
     
     MySqlDataBase database = new MySqlDataBase();
-    
+    Dialogs dg;
     Departamento departamento;
     Cargo cargos;
     TipoSalario tipoSalario;
@@ -137,8 +141,8 @@ public class AddEmployeeController implements Initializable {
 
     @FXML
     void btn_empleado_guardar(ActionEvent event) {
-        
-        if (all_camps()) {
+            dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());    
+        if (all_camps(event)) {
             try {
                 database.Insert("empleado_admin(fecha_ingreso,id_departamento,id_cargo,tipo_salario,id_estado)", ""+"'"+admin_fechaIngreso.getValue().toString()+"',"+
                         admin_departamento.getValue().getId()+","+admin_cargo.getValue().getId()+","+admin_tiposalario.getValue().getId()+","+""
@@ -149,43 +153,26 @@ public class AddEmployeeController implements Initializable {
         
                 
                 database.Insert("dependientes","id_empleado,nombre,apellido,cedula,tipo_dependiente",admin_id.getText()+",'"+dependientes_nombre.getText()+"','"+dependientes_apellido.getText()+"','"+dependientes_ced.getText()+"','"+dependiente_tipo.getValue().getTipo()+"'");
+                
+                dg.informationWithoutHeaderDialog("Usuario creado", "El usuario ha sido creado existosamente.");
+                
             } catch(Exception ex) {
+                dg.exceptionDialog("Error creando usuario", "Error C534ND0", "Se ha encontrado un error creando este usuario.", ex);
                 System.out.println(ex);
             }
+            
+            
         }
         
-        btn_empleado_limpiar(null);
         
     }
     
 
     @FXML
     void btn_empleado_limpiar(ActionEvent event) {
-        flag_bug = 2;
-        empleado_cedula.clear();
-        empleado_nombre.clear();
-        empleado_apellido.clear();
-        empleado_sexo.getSelectionModel().clearSelection();
-        empleado_civil.getSelectionModel().clearSelection();
-        empleado_nacimiento.setValue(null);
-        empleado_mail.clear();
-        empleado_movil.clear();
-        empleado_telefono.clear();
-        empleado_direccion.clear();
         
-        dependientes_nombre.clear();
-        dependientes_apellido.clear();
-        dependientes_ced.clear();
-        dependiente_tipo.getSelectionModel().clearSelection();
-        
-        admin_id.clear();
+        menuBar_limpiar(event);
         setID();
-        admin_fechaIngreso.setValue(null);
-        admin_departamento.getSelectionModel().clearSelection();
-        admin_tiposalario.getSelectionModel().clearSelection();
-        admin_monto_salario.clear();
-        admin_cargo.getSelectionModel().clearSelection();
-        flag_bug = 1;
     }
     
     
@@ -201,6 +188,17 @@ public class AddEmployeeController implements Initializable {
         // TODO
         database.getConn();
         Validation.asignEventHandler(empleado_nombre, 1, 0);
+        Validation.asignEventHandler(empleado_cedula, 3, 11);
+        Validation.asignEventHandler(empleado_apellido, 1, 0);
+        Validation.asignEventHandler(empleado_mail, 4, 0);
+        Validation.asignEventHandler(empleado_movil, 3, 10);
+        Validation.asignEventHandler(empleado_telefono, 3, 10);
+        
+        Validation.asignEventHandler(dependientes_nombre, 1,0);
+        Validation.asignEventHandler(dependientes_apellido, 1, 0);
+        Validation.asignEventHandler(dependientes_ced, 4, 11);
+
+        
         llenarComboBox();
         setID();
         
@@ -208,7 +206,7 @@ public class AddEmployeeController implements Initializable {
 
             @Override
             public void changed(ObservableValue<? extends Cargo> observable, Cargo oldValue, Cargo newValue) {
-                if (flag_bug == 1) {
+                if (!admin_cargo.getSelectionModel().isEmpty()) {
                 colocarMonto(newValue);
     
                 }
@@ -236,8 +234,20 @@ public class AddEmployeeController implements Initializable {
     }
  
     
-    private boolean all_camps() {
-        return true;
+    private boolean all_camps(ActionEvent event) {
+        if (!empleado_nombre.getText().isEmpty() && !empleado_cedula.getText().isEmpty() && !empleado_apellido.getText().isEmpty() &&
+                !empleado_civil.getSelectionModel().isEmpty() && 
+                !empleado_direccion.getText().isEmpty() && !empleado_mail.getText().isEmpty() && !empleado_movil.getText().isEmpty() &&
+                !empleado_sexo.getSelectionModel().isEmpty() && !empleado_telefono.getText().isEmpty() && 
+                admin_fechaIngreso.getValue()!=null && !admin_departamento.getSelectionModel().isEmpty() &&
+                !admin_cargo.getSelectionModel().isEmpty() && !admin_tiposalario.getSelectionModel().isEmpty() &&
+                (empleado_nacimiento.getValue()!=null)) {
+            return true;
+        } else {
+            dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
+            dg.errorDialog("Campos no llenos", null, "No todos los campos han sido llenados como corresponden.");
+            return false;
+        }
     }
     
     private java.sql.Date formattingDate(String dateFromDatePicker) throws ParseException {
@@ -313,5 +323,43 @@ public class AddEmployeeController implements Initializable {
         }
              
     }
+    
+    /**
+     * Metodos del menu bar
+     */
 
+    @FXML
+    void menuBar_close(ActionEvent event) {
+        MenuBar.menuBarClose(event);
+    }
+
+    @FXML
+    void menuBar_limpiar(ActionEvent event) {
+        ArrayList<Object> array = new ArrayList<>();
+        array.add(empleado_apellido);
+        array.add(empleado_cedula);
+        array.add(empleado_civil);
+        array.add(empleado_direccion);
+        array.add(empleado_mail);
+        array.add(empleado_movil);
+        array.add(empleado_nacimiento);
+        array.add(empleado_nombre);
+        array.add(empleado_sexo);
+        array.add(empleado_telefono);
+        array.add(admin_monto_salario);
+        array.add(admin_cargo);
+        array.add(admin_departamento);
+        array.add(admin_fechaIngreso);
+        array.add(admin_tiposalario);
+        array.add(dependiente_tipo);
+        array.add(dependientes_apellido);
+        array.add(dependientes_ced);
+        array.add(dependientes_nombre);
+        MenuBar.menuBarLimpiar(array);
+    }
+
+    @FXML
+    void menuBar_acerca(ActionEvent event) {
+        MenuBar.menuBarAcerca(event);
+    }
 }

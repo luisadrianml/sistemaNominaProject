@@ -18,8 +18,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 
 /**
@@ -51,20 +54,33 @@ public class AddCargosController implements Initializable {
 
     @FXML
     void btn_crear(ActionEvent event) {
+        Dialogs dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
 
         if (all_camps()) {
             database.Insert("cargo(nombre,monto)", "'"+cargocrear_nombre.getText()+"',"+cargocrear_monto.getText());
             
             llenarCargos();
             limpiarCampos(1);
+            
+            dg.informationWithoutHeaderDialog("Cargo creado", "El cargo ha sido creado existosamente");
+        } else {
+            dg.errorDialog("Cargo no creado", null, "El cargo no ha sido creado, compruebe los campos.");
         }
     }
 
     @FXML
     void btn_edit(ActionEvent event) {
-        database.Update("cargo", "monto="+cargoedit_monto.getText(), "id", cmbedit_nombre.getValue().getId());
+        Dialogs dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
+        if (!cmbedit_nombre.getSelectionModel().isEmpty() && !cargoedit_monto.getText().isEmpty()  && cargoedit_monto.getText().indexOf(".", cargoedit_monto.getText().indexOf(".")+1) == -1){
+            database.Update("cargo", "monto="+cargoedit_monto.getText(), "id", cmbedit_nombre.getValue().getId());
+            limpiarCampos(2);
+            
+            dg.informationWithoutHeaderDialog("Cargo editado", "El cargo ha sido editado existosamente");
+        } else {
+            dg.errorDialog("Error editando cargo", null, "El cargo no puede ser editado, compruebe los campos y su seleccion.");
+        }
         
-        limpiarCampos(2);
+
     }
     
     void limpiarCampos(int state) {
@@ -90,12 +106,15 @@ public class AddCargosController implements Initializable {
         database.getConn();
         llenarCargos();
         
+        Validation.asignEventHandler(cargoedit_monto, 7, 10);
+        Validation.asignEventHandler(cargocrear_monto, 7, 10);
+        Validation.asignEventHandler(cargocrear_nombre, 6, 20);
         
         cmbedit_nombre.valueProperty().addListener(new ChangeListener<Cargo>() {
 
             @Override
             public void changed(ObservableValue<? extends Cargo> observable, Cargo oldValue, Cargo newValue) {
-                if (flag_bug==1) {
+                if (!cmbedit_nombre.getSelectionModel().isEmpty()) {
                     colocarMonto(newValue);
                 }
             
@@ -126,7 +145,7 @@ public class AddCargosController implements Initializable {
     }
 
     private boolean all_camps() {
-        return true;
+        return !cargocrear_nombre.getText().isEmpty() && !cargocrear_monto.getText().isEmpty() &&  cargocrear_monto.getText().indexOf(".", cargocrear_monto.getText().indexOf(".")+1) == -1;
     }
     
 }

@@ -18,11 +18,13 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 
 /**
@@ -37,7 +39,7 @@ public class UsuariosController implements Initializable {
      * Declaracion de variables 
      */
     MySqlDataBase database = new MySqlDataBase();
-    
+    Dialogs dg;
     /**
      * Declaracion variables de graficos
      */
@@ -99,18 +101,41 @@ public class UsuariosController implements Initializable {
      */
     @FXML
     void hB_crear(ActionEvent event) {
+        Dialogs dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
         int tipo_user;
-        if (cmb_tipo.getValue().equals("Administrador")) {
-            tipo_user = 1;
-        } else {
-            tipo_user = 2;
-        }
-                    database.Insert("usuarios", "usuario, clave, tipo_usuario", "'"+text_usuario.getText()+"','"+text_clave.getText()+"',"+tipo_user+"");
-                    database.Insert("usuario_pers", "'"+text_usuario.getText()+"','"+text_nombre.getText()+"','"+text_apellido.getText()+"','"+text_email.getText()+"'");
- 
+        
+        if (all_camps(1)) {
+            
 
-        clearFields(1); // Metodo de limpieza de campos
-        fillComboBox_tipo_usuario();
+            if (cmb_tipo.getValue().equals("Administrador")) {
+                tipo_user = 1;
+            } else {
+                tipo_user = 2;
+            }
+                        database.Insert("usuarios", "usuario, clave, tipo_usuario", "'"+text_usuario.getText().toLowerCase()+"','"+text_clave.getText()+"',"+tipo_user+"");
+                        database.Insert("usuario_pers", "'"+text_usuario.getText()+"','"+text_nombre.getText()+"','"+text_apellido.getText()+"','"+text_email.getText()+"'");
+
+
+            clearFields(1); // Metodo de limpieza de campos
+            dg.informationWithoutHeaderDialog("Creacion de usuarios", "Usuario creado existosamente.");
+            fillComboBox_tipo_usuario();
+        } else {
+            dg.informationWithoutHeaderDialog("Creacion de usuarios", "Favor de ingresar todos los campos...");
+        }
+    }
+    
+    boolean all_camps(int i) { 
+        boolean r = false;
+        if (i == 1) {
+            if (!text_nombre.getText().isEmpty() && !text_apellido.getText().isEmpty() && !text_usuario.getText().isEmpty() && 
+                    !text_clave.getText().isEmpty() && !text_email.getText().isEmpty() && !cmb_tipo.getSelectionModel().isEmpty()) {
+                r = true;
+            }
+        } else if (i == 2) {
+            r = true;
+        }
+        
+        return r;
     }
 
     @FXML
@@ -121,12 +146,17 @@ public class UsuariosController implements Initializable {
 
     @FXML
     void hb_borrar(ActionEvent event) {
+               dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
+     
         if (!(cmb_usuarios_borrar.getValue() == null)) {
-            database.Delete("usuarios", "usuario", ""+cmb_usuarios_borrar.getValue()+"");
-            // SHOW DIALOG FOR SUCCESS
             
-            System.out.println("Usuario borrado");
+            if (dg.confirmationDialog("Borrado de usuario", null, "Se va a borrar un usuario, es una acción que no puede ser revertida. Favor confirmar.")) {
+                database.Delete("usuarios", "usuario", ""+cmb_usuarios_borrar.getValue()+"");  
+                dg.informationWithoutHeaderDialog("Usuario borrado", "El usuario ha sido borrado existosamente.");
+                fillComboBox_borrar();
+            } 
         } else {
+            dg.errorDialog("Error - borrado de usuario", null, "El usuario no ha podido ser borrado.");
         // SHOW DIALOG FOR ERROR
         }
     }
@@ -137,16 +167,25 @@ public class UsuariosController implements Initializable {
      */
     @FXML
     void hB_edit(ActionEvent event) {
-        database.Update("usuario_pers", "nombre='"+txt_edit_nombre.getText()+"',apellido='"+txt_edit_apellido.getText()+"',correo='"+txt_edit_email.getText()+"'", "id_usuario", cmb_usuario_edit.getValue());
-        database.Update("usuarios", "clave='"+txt_edit_clave.getText()+"',tipo_usuario="+((cmb_edit_tipoUs.getValue().equals("Administrador")) ? 1 : 2), "usuario", cmb_usuario_edit.getValue());
+        Dialogs dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
         
-        clearFields(2);
-        fillComboBox_editar();
-        fillComboBox_edit_tipos_usuarios();
-        System.out.println("Success editando!");
-        /**
-         * @todo SHOW SUCCESS
-         */
+        if (!cmb_usuario_edit.getSelectionModel().isEmpty()) {
+                database.Update("usuario_pers", "nombre='"+txt_edit_nombre.getText()+"',apellido='"+txt_edit_apellido.getText()+"',correo='"+txt_edit_email.getText()+"'", "id_usuario", cmb_usuario_edit.getValue());
+                database.Update("usuarios", "clave='"+txt_edit_clave.getText()+"',tipo_usuario="+((cmb_edit_tipoUs.getValue().equals("Administrador")) ? 1 : 2), "usuario", cmb_usuario_edit.getValue());
+        
+                clearFields(2);
+                fillComboBox_editar();
+                fillComboBox_edit_tipos_usuarios();
+                //System.out.println("Success editando!");
+                /**
+                 * @todo SHOW SUCCESS
+                 */
+                dg.informationWithoutHeaderDialog("Usuario editado", "El usuario ha sido editado existosamente.");
+        } else {
+            dg.errorDialog("Usuario no ha sido editado", null, "El usuario no ha podido ser editado, compruebe la seleccion de empleado");
+        }
+  
+        
     }
     
     /**
@@ -260,13 +299,17 @@ public class UsuariosController implements Initializable {
         database.getConn();
         
         fillComboBox_tipo_usuario();
-        
+        Validation.asignEventHandler(text_nombre, 1, 0);
+        Validation.asignEventHandler(text_apellido, 1, 0);
+        Validation.asignEventHandler(txt_edit_apellido, 1, 0);
+        Validation.asignEventHandler(txt_edit_nombre, 1, 0);
         
         
         selected_borrar.setOnSelectionChanged(new EventHandler<Event>() {
 
             @Override
             public void handle(Event event) {
+                cmb_usuarios_borrar.getItems().clear();
                 fillComboBox_borrar();
             }
         });
@@ -275,6 +318,7 @@ public class UsuariosController implements Initializable {
 
             @Override
             public void handle(Event event) {
+                cmb_usuario_edit.getItems().clear();
                 fillComboBox_editar();
                 fillComboBox_edit_tipos_usuarios();
                 clearFields(2);

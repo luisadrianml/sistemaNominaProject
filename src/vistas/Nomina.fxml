@@ -7,28 +7,45 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemanomina.NominaController">
+<AnchorPane id="AnchorPane" prefHeight="474.0" prefWidth="345.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemanomina.NominaController">
    <children>
-      <TitledPane animated="false" collapsible="false" prefHeight="144.0" prefWidth="345.0" text="Nomina para un empleado">
+      <TitledPane animated="false" collapsible="false" prefHeight="205.0" prefWidth="345.0" text="Nomina para un empleado">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="118.0" prefWidth="182.0">
                <children>
-                  <Button layoutX="154.0" layoutY="82.0" mnemonicParsing="false" onAction="#generarNominaIndividual" prefHeight="25.0" prefWidth="65.0" text="Generar" />
-                  <ComboBox fx:id="cmb_ID_nomina" layoutX="112.0" layoutY="47.0" prefWidth="150.0" promptText="Seleccione..." />
-                  <Label layoutX="95.0" layoutY="51.0" text="ID:" />
+                  <Button layoutX="154.0" layoutY="147.0" mnemonicParsing="false" onAction="#generarNominaIndividual" prefHeight="25.0" prefWidth="65.0" text="Generar" />
+                  <ComboBox fx:id="cmb_ID_nomina" layoutX="112.0" layoutY="112.0" prefWidth="150.0" promptText="Seleccione..." />
+                  <Label layoutX="95.0" layoutY="116.0" text="ID:" />
                   <ComboBox fx:id="cmb_tipoSalario" layoutX="112.0" layoutY="14.0" prefWidth="150.0" promptText="Seleccione..." />
                   <Label layoutX="36.0" layoutY="18.0" text="Tipo de pago:" />
+                  <ComboBox fx:id="cmb_mes_individual" layoutX="112.0" layoutY="47.0" prefWidth="150.0" promptText="Seleccione..." />
+                  <Label layoutX="84.0" layoutY="51.0" text="Mes:" />
+                  <ComboBox fx:id="cmb_periodo_individual" layoutX="112.0" layoutY="79.0" prefWidth="150.0" promptText="Seleccione..." />
+                  <Label layoutX="65.0" layoutY="83.0" text="Periodo:" />
                </children>
             </AnchorPane>
         </content>
       </TitledPane>
-      <TitledPane animated="false" collapsible="false" layoutY="144.0" prefHeight="137.0" prefWidth="345.0" text="Nomina para conjunto de empleado">
+      <TitledPane animated="false" collapsible="false" layoutY="205.0" prefHeight="191.0" prefWidth="345.0" text="Nomina para conjunto de empleado">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="154.0" layoutY="56.0" mnemonicParsing="false" onAction="#generarNominatotal" prefHeight="25.0" prefWidth="65.0" text="Generar" />
+                  <Button layoutX="154.0" layoutY="124.0" mnemonicParsing="false" onAction="#generarNominatotal" prefHeight="25.0" prefWidth="65.0" text="Generar" />
                   <Label layoutX="41.0" layoutY="27.0" text="Tipo de pago:" />
                   <ComboBox fx:id="cmb_tipoSalario2" layoutX="117.0" layoutY="23.0" prefWidth="150.0" promptText="Seleccione..." />
+                  <Label layoutX="69.0" layoutY="92.0" text="Periodo:" />
+                  <ComboBox fx:id="cmb_periodo_todos" layoutX="117.0" layoutY="88.0" prefWidth="150.0" promptText="Seleccione..." />
+                  <Label layoutX="88.0" layoutY="60.0" text="Mes:" />
+                  <ComboBox fx:id="cmb_mes_todos" layoutX="117.0" layoutY="56.0" prefWidth="150.0" promptText="Seleccione..." />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+      <TitledPane animated="false" collapsible="false" layoutY="396.0" prefHeight="79.0" prefWidth="345.0" text="Ruta donde se genera el documento actual">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button layoutX="120.0" layoutY="14.0" mnemonicParsing="false" onAction="#browserbtn" text="Abrir explorador" />
                </children>
             </AnchorPane>
         </content>

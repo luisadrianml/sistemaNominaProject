@@ -6,8 +6,10 @@
 
 package sistemanomina;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 
@@ -32,7 +35,8 @@ import mysql.MySqlDataBase;
  */
 public class LoginPrimaryController implements Initializable {
     
-    MySqlDataBase database = new MySqlDataBase();
+    MySqlDataBase database;
+    Dialogs dg;
     
     @FXML
     private Button bttn_login;
@@ -52,63 +56,94 @@ public class LoginPrimaryController implements Initializable {
 
     @FXML
     void hBlogin(ActionEvent event) throws Exception {
-//        String usuario = "";
-//        String password = "";
-//        
-//        ResultSet rs;
-//        rs = database.Select("usuario,clave", "usuarios", "usuario", text_user.getText().toLowerCase());
-//        try {
-//            while(rs.next()) {
-//                usuario = rs.getString("usuario");
-//                password = rs.getString("clave");
-//            }
-//        } catch(Exception ex) {
-//            System.out.println(ex);
-//        }
-//        
-//        
-//        if ((usuario.equals(text_user.getText().toLowerCase())) && password.equals(text_pass.getText())) {
-//            
-            // abrir nueva ventana
-            Stage stage1 = new Stage();
-            Parent root;
-            root = FXMLLoader.load(getClass().getResource("/vistas/ContPrimaryScreen.fxml"));
-            Scene scene = new Scene(root);
-            stage1.setScene(scene);
-            stage1.setMaxWidth(600);
-            stage1.setMinHeight(394);
-            stage1.setResizable(false);
-            stage1.show();
+        String usuario = "";
+        String password = "";
+        int tipo_usuario = 0;
+        
+        ResultSet rs;
+        rs = database.Select("usuario,clave,tipo_usuario", "usuarios", "usuario", text_user.getText().toLowerCase());
+        try {
+            while(rs.next()) {
+                usuario = rs.getString("usuario");
+                password = rs.getString("clave");
+                tipo_usuario = rs.getInt("tipo_usuario");
+            }
+        } catch(Exception ex) {
+            dg.exceptionDialog("Sistema de nomina", "Error - Inicio de sesion", "Hemos encontrado un problema...", ex);
+        }
+        
+        if (!text_user.getText().isEmpty() && !text_pass.getText().isEmpty()) {
+
+            if ((usuario.equals(text_user.getText().toLowerCase())) && password.equals(text_pass.getText())) {
+
+                if (tipo_usuario == 1) {
+                    // abrir nueva ventana
+                    Stage stage1 = new Stage();
+                    Parent root;
+                    root = FXMLLoader.load(getClass().getResource("/vistas/AdminPrimaryScreen.fxml"));
+                    Scene scene = new Scene(root);
+                    stage1.setScene(scene);
+                    stage1.setMaxWidth(600);
+                    stage1.setMinHeight(204);
+                    stage1.setResizable(false);
+                    stage1.getIcons().add(new Image("/images/logo_solo.png"));
+                    stage1.show();
+
+                    // cerrar ventana actual
+                    Node source = (Node) event.getSource();
+                    Stage stage = (Stage) source.getScene().getWindow();
+                    stage.close();
+                    database.closeConn();
+                } else if (tipo_usuario ==2) {
+                    // abrir nueva ventana
+                    Stage stage1 = new Stage();
+                    Parent root;
+                    root = FXMLLoader.load(getClass().getResource("/vistas/ContPrimaryScreen.fxml"));
+                    Scene scene = new Scene(root);
+                    stage1.setScene(scene);
+                    stage1.setMaxWidth(600);
+                    stage1.setMinHeight(394);
+                    stage1.setResizable(false);
+                    stage1.getIcons().add(new Image("/images/logo_solo.png"));
+                    stage1.show();
+
+                    // cerrar ventana actual
+                    Node source = (Node) event.getSource();
+                    Stage stage = (Stage) source.getScene().getWindow();
+                    stage.close();
+                    database.closeConn();
+                } else {
+
+                }
+
+            } else {
+                /// SHOW DIALOG DE ERROR
+                dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
+                dg.errorDialog("Sistema de Nomina", "Clave/Usuario incorrecto", "La clave o usuario que ha digitado es incorrecta.");
+            }
+        
+        } else {
+
             
-            // cerrar ventana actual
-            Node source = (Node) event.getSource();
-            Stage stage = (Stage) source.getScene().getWindow();
-            stage.close();
-//        } else {
-//            /// SHOW DIALOG DE ERROR
-//        }
-//        
-//        
-            database.closeConn();
+        }
+
     }
     
     @FXML
     void hBClean(ActionEvent event) {
          text_pass.clear();
          text_user.clear();
-         
-         Node source = (Node) event.getSource();
-         Dialogs dg = new Dialogs((Stage) source.getScene().getWindow());
-         dg.informationDialog("Boton de limpiar", "Presionado boton", "Se supone que tiene icono del login");
-         
-
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        
-        database.getConn();
+                    
+            database = new MySqlDataBase();
+            database.getConn();          
+            
+            
+
         ///new EmpresaDataController().fillEmpresas();
         
     }   

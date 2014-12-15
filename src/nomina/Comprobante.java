@@ -40,10 +40,13 @@ public class Comprobante {
     private String lastname_employee = "Parker";
     private  double salary_employee = 15000.00;
      private  String month = "DICIEMBRE";
-    private  String FILE;
-    private  int columns = 4;
+   // private  String FILE = "C:\\Comprobante_Nomina_"+id_employee+".pdf";
+     private  String FILE = "C:\\Nomina";
+    private  int columns = 5;
     private  Font columnTitle = new Font(Font.FontFamily.HELVETICA,13,Font.BOLD);
     private  PdfPTable pdfTable = new PdfPTable(columns);
+    private int cantidadPagos = 0;
+    private File filePDF;
     Document document;
 
     public  int getId_employee() {
@@ -110,6 +113,7 @@ public class Comprobante {
     public  void setFILE(String FILE) {
         this.FILE = FILE;
     }
+    
 
     public  int getColumns() {
         return columns;
@@ -136,13 +140,20 @@ public class Comprobante {
     }
 
     public void createandheaderPDF(ActionEvent event) {
-        FILE = "C:\\Nomina\\Comprobante_Nomina_"+id_employee+".pdf";
+        
         try{
-                File filePDF = new File(FILE);
-                if (!filePDF.exists()) {
+                    filePDF = new File(FILE);
+                    filePDF.setWritable(true);
+                    filePDF.mkdirs();
+                    filePDF = new File(FILE+"\\comprobante_"+id_employee+"_periodo_"+month+"_tipo_"+cantidadPagos+"_#"+Math.floor(Math.random()*(10000-1000)+1000)+".pdf");
+                    if (!filePDF.exists()) {
+                        filePDF.createNewFile();                    
+                } else if (filePDF.exists()) {
+                    filePDF.getAbsoluteFile().renameTo(new File(FILE+"\\comprobante_"+id_employee+"_periodo_"+month+"_tipo_"+cantidadPagos+"_#"+Math.floor(Math.random()*(10000-1000)+1000)+"_2.pdf"));
                     filePDF.createNewFile();
                 }
-                OutputStream file = new FileOutputStream(new File (FILE));
+
+                OutputStream file = new FileOutputStream(filePDF);
                 document = new Document();
                 PdfWriter.getInstance(document, file);
                 
@@ -179,6 +190,11 @@ public class Comprobante {
                 cell1.setBackgroundColor(BaseColor.LIGHT_GRAY);
                 pdfTable.addCell(cell1);
                 
+                cell1 = new PdfPCell(new Phrase("SALARIO BRUTO",columnTitle));
+                cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                pdfTable.addCell(cell1);
+                
                 cell1 = new PdfPCell(new Phrase("INGRESOS",columnTitle));
                 cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
                 cell1.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -210,6 +226,7 @@ public class Comprobante {
     
     public void llenarIngresos(Double ingreso, String nombre) {
         pdfTable.addCell(nombre);
+        pdfTable.addCell("");
         pdfTable.addCell(ingreso.toString());
         pdfTable.addCell("");
         pdfTable.addCell("");
@@ -218,6 +235,7 @@ public class Comprobante {
     public void llenarDeduccion(Double deducc, String nombre) {
         pdfTable.addCell(nombre);
         pdfTable.addCell("");
+        pdfTable.addCell("");
         pdfTable.addCell(deducc.toString());
         pdfTable.addCell("");
     }
@@ -225,6 +243,7 @@ public class Comprobante {
     public void totalIngresos(Double tingreso) {
         pdfTable.getDefaultCell().setBackgroundColor(BaseColor.YELLOW);
         pdfTable.addCell("Total de ingresos:");
+        pdfTable.addCell("");
         pdfTable.addCell(tingreso.toString());
         pdfTable.addCell("");
         pdfTable.addCell("");
@@ -236,6 +255,7 @@ public class Comprobante {
         pdfTable.getDefaultCell().setBackgroundColor(BaseColor.YELLOW);
         pdfTable.addCell("Total de deducciones:");
         pdfTable.addCell("");
+        pdfTable.addCell("");
         pdfTable.addCell(tdeduc.toString());
         pdfTable.addCell("");
         pdfTable.getDefaultCell().setBackgroundColor(null);
@@ -244,6 +264,7 @@ public class Comprobante {
     public void neto(Double neto) {
         pdfTable.getDefaultCell().setBackgroundColor(BaseColor.RED);
         pdfTable.addCell("Total a pagar");
+        pdfTable.addCell("");
         pdfTable.addCell("");
         pdfTable.addCell("");
         pdfTable.addCell(neto.toString());
@@ -256,7 +277,7 @@ public class Comprobante {
     
     public void abrirPDF() {
         try {
-            File path = new File(FILE);
+            File path = filePDF;
             Desktop.getDesktop().open(path);
         } catch(IOException ex) {
             ex.printStackTrace();

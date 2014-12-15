@@ -105,27 +105,37 @@ public class NovedadesController implements Initializable {
     /**
      * Declaracion de boton que se ejecuta al seleccionar el Boton de agregar en la tab de deducciones
      * @param event 
+     * Parametro de la accion de recibir el clic en el boton
      */
     @FXML
     void btn_deducciones_agregar(ActionEvent event) {
+        Dialogs dg = new Dialogs(event);
         if (all_camps(2)) {
             Deduccion deduccion2 = new Deduccion(cmb_tipo_deducciones.getValue().getNombre(), Double.parseDouble(txt_monto_deducciones.getText()));
             deduccion2.setId_empleado(cmb_ID_deducciones.getValue().getID_empleado());
             deduccion2.setId(cmb_tipo_deducciones.getValue().getId());
             database.Insert("deduccioness_emp(id_empleado,tipo_deduccion,monto,estado)", "'"+deduccion2.getId_empleado()+"','"+deduccion2.getId()+"',"+deduccion2.getMonto()+","+1);
+            limpiar(2);
+            dg.informationWithoutHeaderDialog("Ingresar deduccion por empleado", "La deduccion de ese empleado ha sido agregado");
+        } else {
+            dg.errorDialog("Error ingresos empleado", null, "No se ha podido agregar dicho ingreso al empleado, confirme todos los campos.");
         }
-        limpiar(2);
     }
     
         @FXML
     void btn_agregar_ingresos(ActionEvent event) {
+        Dialogs dg = new Dialogs(event);
         if (all_camps(1)) {
             Ingreso ingreso = new Ingreso(cmb_tipo_ingresos.getValue().getNombre(), Double.parseDouble(txt_monto_ingreso.getText()));
             ingreso.setId_empleado(cmb_ID_ingresos.getValue().getID_empleado());
             ingreso.setId(cmb_tipo_ingresos.getValue().getId());
             database.Insert("ingresos_emp(id_empleado,tipo_ingreso,monto)", "'"+ingreso.getId_empleado()+"','"+ingreso.getId()+"',"+ingreso.getMonto()+"");
+            dg.informationWithoutHeaderDialog("Ingresar ingresos por empleado", "El ingreso de ese empleado ha sido agregado");
+            limpiar(1);
+        }  else {
+            dg.errorDialog("Error ingresos empleado", null, "No se ha podido agregar dicho ingreso al empleado, confirme todos los campos.");
         }
-        limpiar(1);
+        
     }
     
     boolean limpiar(int i) {
@@ -156,49 +166,75 @@ public class NovedadesController implements Initializable {
 
     @FXML
     void btn_agregar_tipoingresos(ActionEvent event) {
+        Dialogs dg = new Dialogs(event);
         if (!txt_nombre_tipoingresos.getText().isEmpty()) {
             database.Insert("tipos_ingresos(nombre)", "'"+txt_nombre_tipoingresos.getText()+"'");
             limpiar(1);
             llenarTIPOingreso();
+            dg.informationWithoutHeaderDialog("Tipo de ingreso", "El tipo de ingreso ha sido creado exitosamente");
+        } else {
+            dg.errorDialog("Error tipo de ingreso", null, "El agregar el tipo de ingreso no se ha podido realizar");
         }
     }
 
     @FXML
     void btn_borrar_ingreso(ActionEvent event) {
+        Dialogs dg = new Dialogs(event);
+        dg.errorDialog("Borrar tipo de ingreso", null, "El borrado de tipo de ingreso no ha sido implementado");
+
         if (!cmb_tipoingresos.getSelectionModel().isEmpty()) {
             database.Delete("tipos_ingresos", "id", cmb_tipo_ingresos.getValue().getId()+"");
-        }
+        } 
+
     }
 
     @FXML
     void btn_borrarIngresos(ActionEvent event) {
-        if (table_ingresos.getSelectionModel().getSelectedItem() != null) {
+        Dialogs dg = new Dialogs(event);
+        if (table_ingresos.getSelectionModel().getSelectedItem() != null && dg.confirmationDialog("Borrado permanente", null, "El borrado de ingresos "
+                + "es una accion no revertible, favor de confirmar dicha accion.")) {
             Ingreso ing = (Ingreso) table_ingresos.getSelectionModel().getSelectedItem();
             database.Delete("ingresos_emp", "id", ing.getId()+"");
             limpiar(1);
+            dg.informationWithoutHeaderDialog("Ingreso borrada", "El ingreso ha sido borrado exitosamente");
+        } else {
+            dg.errorDialog("Error ingreso", null, "El ingreso no ha podido ser borrado");
+ 
         }
     }
     
     @FXML
     void btn_borrardeduccion(ActionEvent event) {
-        if (table_deducciones.getSelectionModel().getSelectedItem() != null) {
+        Dialogs dg = new Dialogs(event);
+        if (table_deducciones.getSelectionModel().getSelectedItem() != null && dg.confirmationDialog("Borrado permanente", null, "El borrado de deducciones "
+                + "es una accion no revertible, favor de confirmar dicha accion.")) {
             Deduccion deduc = (Deduccion) table_deducciones.getSelectionModel().getSelectedItem();
             database.Delete("deduccioness_emp", "id", deduc.getId()+"");
             limpiar(2);
+            dg.informationWithoutHeaderDialog("Deduccion borrada", "La deduccion ha sido borrada exitosamente");
+        } else {
+            dg.errorDialog("Error deduccion", null, "La deduccion no ha podido ser borrada");
         }
     }
 
     @FXML
     void btn_tipodeduc_agregar(ActionEvent event) {
+        Dialogs dg = new Dialogs(event);
             if (!txt_nombre_tipodeduccion.getText().isEmpty()) {
             database.Insert("tipos_descuentos(nombre)", "'"+txt_nombre_tipodeduccion.getText()+"'");
             limpiar(2);
-            llenarTIPOingreso();
-        }
-    }
+            llenarTIPODeduccion();
+            dg.informationWithoutHeaderDialog("Tipo de deduccion", "El tipo de deduccion ha sido agregado exitosamente");
+        } else {
+                dg.errorDialog("Error tipo de deduccion", null, "El tipo de deduccion no ha podido ser creado");
+
+            }
+    } 
 
     @FXML
     void btn_borrar_tipodeduc(ActionEvent event) {
+        Dialogs dg = new Dialogs(event);
+        dg.errorDialog("Borrar tipo de deduccion", null, "El borrado de tipo de deduccion no ha sido implementado");
         if (!txt_nombre_tipodeduccion.getText().isEmpty()) {
             database.Insert("tipos_descuentos(nombre)", "'"+txt_nombre_tipodeduccion.getText()+"'");
             limpiar(2);
@@ -212,6 +248,11 @@ public class NovedadesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         database.getConn();
+        
+        Validation.asignEventHandler(txt_monto_ingreso, 7, 30); 
+        Validation.asignEventHandler(txt_monto_deducciones, 7, 30);
+        Validation.asignEventHandler(txt_nombre_tipodeduccion, 6, 20);
+        Validation.asignEventHandler(txt_nombre_tipoingresos, 6, 20);
         
         llenarIDEmpleado();
         llenarTIPOingreso();
@@ -361,7 +402,7 @@ public class NovedadesController implements Initializable {
             case 1: {
                 if (!cmb_ID_ingresos.getSelectionModel().isEmpty() &&
                 !cmb_tipo_ingresos.getSelectionModel().isEmpty() &&
-                !txt_monto_ingreso.getText().isEmpty()
+                !txt_monto_ingreso.getText().isEmpty() && txt_monto_ingreso.getText().indexOf(".", txt_monto_ingreso.getText().indexOf(".")+1) == -1
                 ) 
                     {
                         validated = true;
@@ -369,7 +410,8 @@ public class NovedadesController implements Initializable {
                 break;
             }
             case 2: {
-                if (!cmb_ID_deducciones.getSelectionModel().isEmpty() && !cmb_tipo_deducciones.getSelectionModel().isEmpty() && !txt_monto_deducciones.getText().isEmpty()) {
+                if (!cmb_ID_deducciones.getSelectionModel().isEmpty() && !cmb_tipo_deducciones.getSelectionModel().isEmpty() && !txt_monto_deducciones.getText().isEmpty()
+                        &&  txt_monto_deducciones.getText().indexOf(".", txt_monto_deducciones.getText().indexOf(".")+1) == -1) {
                         validated = true;
                 }
                 break;
@@ -380,6 +422,8 @@ public class NovedadesController implements Initializable {
     }
     
     void llenarTablaIngresos() {
+        
+        table_ingresos.getSelectionModel().clearSelection();
         
         arrayTablaIngresos = new ArrayList<>();
         ResultSet rs = database.Select("tipos_ingresos.nombre, ingresos_emp.tipo_ingreso, ingresos_emp.monto, ingresos_emp.id_empleado,ingresos_emp.id",
@@ -400,6 +444,8 @@ public class NovedadesController implements Initializable {
     }
     
     void llenarTablaDeduccion() {
+        
+        table_deducciones.getSelectionModel().clearSelection();
         arrayTablaDeduccion = new ArrayList<>();
         ResultSet rs = database.Select("tipos_descuentos.nombre, deduccioness_emp.tipo_deduccion, deduccioness_emp.monto, deduccioness_emp.id_empleado, deduccioness_emp.id, deduccioness_emp.estado ",
                 "tipos_descuentos, deduccioness_emp", "tipos_descuentos.id = deduccioness_emp.tipo_deduccion and deduccioness_emp.id_empleado ="+cmb_ID_deducciones.getValue().getID_empleado());

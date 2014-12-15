@@ -31,7 +31,7 @@ public class SistemaNomina extends Application {
         stage.setTitle("Sistema de Nomina");
         
         stage.setScene(scene);
-        stage.getIcons().add(new Image("/images/addicon.png"));
+        stage.getIcons().add(new Image("/images/logo_solo.png"));
         stage.show();
         
         this.stage = stage;

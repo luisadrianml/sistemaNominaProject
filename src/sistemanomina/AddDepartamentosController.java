@@ -19,8 +19,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 
 /**
@@ -52,19 +54,33 @@ public class AddDepartamentosController implements Initializable {
 
     @FXML
     void btn_crear_dep(ActionEvent event) {
+        Dialogs dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
         if (camp_validated()) {
             database.Insert("departamento(nombre,id_empresa)", "'"+departcrear_nombre.getText()+"',"+ID_EMPRESA_UNIQUE);
             departcrear_nombre.clear();
             limpiar();
             llenarDepartamentos();
+            
+            dg.informationWithoutHeaderDialog("Departamento creado", "El departamento ha sido creado existosamente.");
+        } else {
+            dg.errorDialog("Error creacion departamentos", null, "El departamento no ha podido ser creado, compruebe si todos los campos estan llenos.");
         }
     }
 
     @FXML
     void btn_edit_dp(ActionEvent event) {
-        database.Update("departamento", "nombre='"+ txt_nombre.getText() +"'", "id", departamento_selected);
-        limpiar();
-        llenarDepartamentos();
+        Dialogs dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
+        if (!txt_nombre.getText().isEmpty() && !cmbDPedit_nombre.getSelectionModel().isEmpty()) {
+                    database.Update("departamento", "nombre='"+ txt_nombre.getText() +"'", "id", departamento_selected);
+                    limpiar();
+                    llenarDepartamentos();
+                    
+                    
+                    dg.informationWithoutHeaderDialog("Departamento editado", "El departamento ha sido editado");         
+        } else {
+            dg.errorDialog("Campos vacios", null, "No se ha podido realizar la accion por encontrarse campos vacios");
+        }
+
         
     }
     
@@ -82,6 +98,8 @@ public class AddDepartamentosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         llenarDepartamentos();
         
+        Validation.asignEventHandler(departcrear_nombre, 6 , 25);
+        Validation.asignEventHandler(txt_nombre, 6, 25);
         
         cmbDPedit_nombre.valueProperty().addListener(new ChangeListener<Departamento>() {
 
@@ -126,7 +144,7 @@ public class AddDepartamentosController implements Initializable {
     }
         
     boolean camp_validated() {
-        return true;
+        return !txt_nombre.getText().trim().isEmpty();
     }
     
 }

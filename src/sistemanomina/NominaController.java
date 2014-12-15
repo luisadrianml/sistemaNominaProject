@@ -25,6 +25,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 import nomina.Comprobante;
@@ -38,6 +39,7 @@ import nomina.Nomina;
  */
 public class NominaController implements Initializable {
     Dialogs dg;
+    //String fileDirectory = "C:\\Comprobante_Nomina_"+id_employee+".pdf";
     MySqlDataBase database = new MySqlDataBase();
     private ObservableList<TipoSalario> listTipoSalario = FXCollections.observableArrayList(new TipoSalario(1, "Mensual"), new TipoSalario(2, "Quincenal"), new TipoSalario(3, "Semana"),
             new TipoSalario(4, "Hora"));
@@ -54,7 +56,21 @@ public class NominaController implements Initializable {
     
     @FXML
     private ComboBox<TipoSalario> cmb_tipoSalario2;
+    
+    @FXML
+    private ComboBox<?> cmb_mes_todos;
+    
+    @FXML
+    private ComboBox<?> cmb_periodo_todos;
+        
+    @FXML
+    private ComboBox<?> cmb_periodo_individual;
 
+    @FXML
+    private ComboBox<?> cmb_mes_individual;
+    
+    Comprobante cmp = new Comprobante();
+    Comprobante cmptodos;
 
     
     /**
@@ -74,11 +90,11 @@ public class NominaController implements Initializable {
             nomina.getSFS();
 
             
-            Comprobante cmp = new Comprobante();
             cmp.setId_employee(empleado.getID_empleado());
             cmp.setName_employee(empleado.getNombre());
             cmp.setLastname_employee(empleado.getApellido());
             cmp.setSalary_employee(nomina.getSalario());
+            
             cmp.createandheaderPDF(event);
             
             cmp.createTable();
@@ -128,6 +144,8 @@ public class NominaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        cmp = new Comprobante();
         cmb_ID_nomina.setDisable(true);
 
         llenarTipoSalarios();
@@ -159,6 +177,18 @@ public class NominaController implements Initializable {
         
     }
     
+    
+    @FXML
+    void browserbtn(ActionEvent event) {
+        final DirectoryChooser directoryChooser = new DirectoryChooser();
+        final File selectedDirectory = directoryChooser.showDialog((Stage) ((Node) event.getSource()).getScene().getWindow());
+        if (selectedDirectory != null) {
+            cmp.setFILE(selectedDirectory.getAbsolutePath()+"\\");
+        } else {
+            //cmp.setFILE(null);
+        }
+    }
+    
     void llenarIDEmpleado() {
         arrayEmp = new ArrayList<>();
         
@@ -181,10 +211,8 @@ public class NominaController implements Initializable {
         listEmpleado = FXCollections.observableArrayList(arrayEmp);
         cmb_ID_nomina.setItems(listEmpleado);
         
-        if (arrayEmp.size()==0) {
-            
-            dg.informationWithoutHeaderDialog("No registros", "El campo seleccionado no dispone de registros");
-                    
+        if (arrayEmp.size()==0) {     
+            dg.informationWithoutHeaderDialog("No registros", "El campo seleccionado no dispone de registros");                    
         }
     }
     

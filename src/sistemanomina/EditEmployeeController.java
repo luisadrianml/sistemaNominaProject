@@ -28,9 +28,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 
 /**
@@ -74,6 +77,7 @@ public class EditEmployeeController implements Initializable {
     
     private ObservableList<TipoSalario> tiposSalarios;
     
+    private Dialogs dg;
     @FXML
     private TextField dependientes_ced;
 
@@ -97,6 +101,9 @@ public class EditEmployeeController implements Initializable {
 
     @FXML
     private TextField empleado_direccion;
+    
+    @FXML
+    private ImageView searchIconClicked;
 
     @FXML
     private ComboBox<EstadoCivil> empleado_civil;
@@ -141,8 +148,8 @@ public class EditEmployeeController implements Initializable {
 
     @FXML
     void btn_empleado_guardar(ActionEvent event) {
-        
-        if (all_camps_validated()) {
+        dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
+        if (all_camps_validated(event)) {
             
             empleado_admin = new Empleado_Admin(admin_id.getValue().getId(), admin_fechaIngreso.getValue().toString(), admin_departamento.getValue().getId(), admin_cargo.getValue().getId(), admin_tiposalario.getValue().getId(), 
                     cmb_estado.getValue().getId(), admin_departamento.getValue(),admin_cargo.getValue(), admin_tiposalario.getValue());
@@ -154,8 +161,8 @@ public class EditEmployeeController implements Initializable {
             
             dependiente = new Dependientes(dependiente.getId(), empleado_admin.getId() , dependientes_nombre.getText(), dependientes_apellido.getText(),dependientes_ced.getText(),dependiente_tipo.getValue().getTipo());
   
-            
-            database.Update("empleado_admin", "fecha_ingreso='"+empleado_admin.getFecha_ingreso()+"',"
+            try {
+                database.Update("empleado_admin", "fecha_ingreso='"+empleado_admin.getFecha_ingreso()+"',"
                     +"id_departamento="+empleado_admin.getDepartamento().getId()+","
                     +"id_cargo="+empleado_admin.getCargo().getId()+",tipo_salario="
                     +empleado_admin.getTipoSalario().getId()
@@ -172,16 +179,14 @@ public class EditEmployeeController implements Initializable {
                     +"cedula='"+dependiente.getCedula()+ "'," 
                     +"tipo_dependiente='"+dependiente.getTipo()+"'"
                     , "id_empleado", ""+empleado_admin.getId());
-//                database.Insert("empleado_admin", ""+admin_id.getText()+",'"+admin_fechaIngreso.getValue().toString()+"',"+
-//                        admin_departamento.getValue().getId()+","+admin_cargo.getValue().getId()+","+admin_tiposalario.getValue().getId()+","+""
-//                        + "'a'");
-//  
-//                database.Insert("empleado_personal", ""+admin_id.getText()+",'"+empleado_cedula.getText()+"','"+empleado_nombre.getText()+"','"+empleado_apellido.getText()+"','"+empleado_direccion.getText()+"','"+empleado_sexo.getValue().getId()+"','"+
-//                        empleado_civil.getValue().getId()+"','"+empleado_nacimiento.getValue().toString()+"','"+empleado_mail.getText()+"','"+empleado_movil.getText()+"','"+empleado_telefono.getText()+"'");
-//        
-//                
-//                database.Insert("dependientes","id_empleado,nombre,apellido,cedula,tipo_dependiente",admin_id.getText()+",'"+dependientes_nombre.getText()+"','"+dependientes_apellido.getText()+"','"+dependientes_ced.getText()+"','"+dependiente_tipo.getValue().getTipo()+"'");
-//        
+
+                dg.informationWithoutHeaderDialog("Usuario editado", "El usuario ha sido editado existosamente.");
+            } catch (Exception ex) {
+                dg.exceptionDialog("Error editando usuario", "Error 3D174ND0", "Se ha encontrado un error editando este usuario.", ex);
+
+            }
+            
+
         }
 
     }
@@ -201,11 +206,27 @@ public class EditEmployeeController implements Initializable {
         llenarIDs();
         ComboBoxFills();
         
+        Validation.asignEventHandler(empleado_nombre, 1, 0);
+        Validation.asignEventHandler(empleado_cedula, 3, 11);
+        Validation.asignEventHandler(empleado_apellido, 1, 0);
+        Validation.asignEventHandler(empleado_mail, 4, 0);
+        Validation.asignEventHandler(empleado_movil, 3, 10);
+        Validation.asignEventHandler(empleado_telefono, 3, 10);
+        
+        Validation.asignEventHandler(dependientes_nombre, 1,0);
+        Validation.asignEventHandler(dependientes_apellido, 1, 0);
+        Validation.asignEventHandler(dependientes_ced, 4, 11);
+        
+        
+        
     admin_id.valueProperty().addListener(new ChangeListener<Empleado_Admin>() {
 
         @Override
         public void changed(ObservableValue<? extends Empleado_Admin> observable, Empleado_Admin oldValue, Empleado_Admin newValue) {
-            fillCampos(newValue);
+            
+            if (!admin_id.getSelectionModel().isEmpty()) {
+                fillCampos(newValue);
+            }
         }
     
     
@@ -219,14 +240,53 @@ public class EditEmployeeController implements Initializable {
      */
     @FXML
     void searchIconClicked(ActionEvent event) {
-
+        Dialogs dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
+        dg.warningDialog("Busqueda de empleados", null, "El sistema de busqueda de empleados por nombre y apellido "
+                + "aun no ha sido implementado.");
     }
     
-    private boolean all_camps_validated() {
-        return true;
+    private boolean all_camps_validated(ActionEvent event) {
+        if (!empleado_nombre.getText().isEmpty() && !empleado_cedula.getText().isEmpty() && !empleado_apellido.getText().isEmpty() &&
+                !empleado_civil.getSelectionModel().isEmpty() && 
+                !empleado_direccion.getText().isEmpty() && !empleado_mail.getText().isEmpty() && !empleado_movil.getText().isEmpty() &&
+                !empleado_sexo.getSelectionModel().isEmpty() && !empleado_telefono.getText().isEmpty() && 
+                admin_fechaIngreso.getValue()!=null && !admin_departamento.getSelectionModel().isEmpty() &&
+                !admin_cargo.getSelectionModel().isEmpty() && !admin_tiposalario.getSelectionModel().isEmpty() &&
+                (empleado_nacimiento.getValue()!=null)) {
+            return true;
+        } else {
+            dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
+            dg.errorDialog("Campos no llenos", null, "No todos los campos pueden estar en blanco.");
+            return false;
+        }
+    }
+    
+    private void limpiar() {
+        ArrayList<Object> array = new ArrayList<>();
+        array.add(empleado_apellido);
+        array.add(empleado_cedula);
+        array.add(empleado_civil);
+        array.add(empleado_direccion);
+        array.add(empleado_mail);
+        array.add(empleado_movil);
+        array.add(empleado_nacimiento);
+        array.add(empleado_nombre);
+        array.add(empleado_sexo);
+        array.add(empleado_telefono);
+        array.add(admin_monto_salario);
+        array.add(admin_cargo);
+        array.add(admin_departamento);
+        array.add(admin_fechaIngreso);
+        array.add(admin_tiposalario);
+        array.add(dependiente_tipo);
+        array.add(dependientes_apellido);
+        array.add(dependientes_ced);
+        array.add(dependientes_nombre);
+        MenuBar.menuBarLimpiar(array);
     }
     
     private void fillCampos(Empleado_Admin empAdmin) {
+
         empleado_admin = empAdmin;
         
         ResultSet rs = database.Select("*", "empleado_personal", "id_empleado", ""+empleado_admin.getId());
@@ -481,7 +541,15 @@ public class EditEmployeeController implements Initializable {
     }
 
     
-    
+    @FXML
+    void menuBar_close(ActionEvent event) {
+        MenuBar.menuBarClose(event);
+    }
+
+    @FXML
+    void menuBar_acerca(ActionEvent event) {
+        MenuBar.menuBarAcerca(event);
+    }
     
     
 }

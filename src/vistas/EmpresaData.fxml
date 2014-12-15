@@ -28,7 +28,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <ComboBox fx:id="cmb_emp_id" editable="true" layoutX="64.0" layoutY="14.0" prefWidth="150.0" promptText="1" />
+                  <ComboBox fx:id="cmb_emp_id" disable="true" layoutX="64.0" layoutY="14.0" prefWidth="150.0" promptText="1" />
                   <Label layoutX="47.0" layoutY="18.0" text="ID:" />
                   <TextField fx:id="txt_emp_nombre" layoutX="65.0" layoutY="48.0" />
                   <Label layoutX="16.0" layoutY="52.0" text="Nombre:" />

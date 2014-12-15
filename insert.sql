@@ -132,3 +132,9 @@ update tipo_salario set factor = 23.83 where id = 1;
 
 insert into tipo_salario(nombre,factor) values ('semana', 5.5);
 insert into tipo_salario(nombre,factor) values ('hora', 8);
+
+select * from usuarios;
+
+insert into usuarios(usuario,clave,tipo_usuario) values ('admin', 'admin', 1);
+insert into usuarios(usuario,clave,tipo_usuario) values ('contable','contable',2);
+select * from usuario_pers;

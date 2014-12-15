@@ -17,6 +17,10 @@ public class Tests {
         emp.setID_empleado(3);
 
         Nomina nomina = ManejadorNomina.generarNomina(emp);
+        
+        nomina.setSalario(2000.00);
+        //ManejadorNomina.
+        
         System.out.println(nomina.getSalario());
 //        System.out.println(nomina);
 //        System.out.println(""+ManejadorNomina.getNetoAPagar(nomina)+"hola");

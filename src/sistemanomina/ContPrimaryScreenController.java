@@ -57,7 +57,9 @@ public class ContPrimaryScreenController implements Initializable {
 
     @FXML
     void btn_editEmployee(ActionEvent event) {
+        
         try {
+            // Stage de ventana nueva a abrir
             Stage stage1 = new Stage();
             Parent root2;
             root2 = FXMLLoader.load(getClass().getResource("/vistas/EditEmployee.fxml"));
@@ -65,12 +67,14 @@ public class ContPrimaryScreenController implements Initializable {
             stage1.setScene(scene);
             stage1.show();
             
-            
-            // cerrar ventana actual
+              // Stage de ventana actual
             Node source = (Node) event.getSource();
             Stage stage = (Stage) source.getScene().getWindow();
+            
+            // cerrar ventana actual
             stage.hide();
             
+            // Metodo para estar atento al cerrar la Stage que se acaba de abrir para mostrar el menu general
             stage1.setOnCloseRequest((WindowEvent we) -> {
                 System.out.println("Closing APP");
                 stage.show();
