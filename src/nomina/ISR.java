@@ -1,7 +1,11 @@
+/*
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
+ */
 package nomina;
 
 /**
- * Created by pc166 on 10/12/2014.
+ * Clase hija de impuestos que contiene los valores especificos del ISR como sus diferentes escalas
  */
 public class ISR extends Impuesto implements Cloneable{
 

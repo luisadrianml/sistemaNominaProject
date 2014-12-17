@@ -1,7 +1,8 @@
 package entidades;
 
 /**
- * Created by pc166 on 10/12/2014.
+ * Clase de entidad de Ingreso con getters y setters
+ * @author SistemaNomina LJ
  */
 public class Ingreso extends FlujoEfectivo{
     

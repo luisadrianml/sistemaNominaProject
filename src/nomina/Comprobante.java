@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 package nomina;
 
@@ -29,8 +28,8 @@ import javafx.stage.Stage;
 import sistemanomina.Dialogs;
 
 /**
- *
- * @author pc167
+ * Clase que plantea los lineamientos de impresion de PDF del comprobante
+ * @author SistemaNomina LJ
  */
 public class Comprobante {
     Dialogs dg;
@@ -43,11 +42,29 @@ public class Comprobante {
    // private  String FILE = "C:\\Comprobante_Nomina_"+id_employee+".pdf";
      private  String FILE = "C:\\Nomina";
     private  int columns = 5;
-    private  Font columnTitle = new Font(Font.FontFamily.HELVETICA,13,Font.BOLD);
+    private int columnsTodos = 6;
+    private  Font columnTitle = new Font(Font.FontFamily.HELVETICA,10,Font.BOLD);
     private  PdfPTable pdfTable = new PdfPTable(columns);
+    private PdfPTable pdfTableTodos = new PdfPTable(columnsTodos);
     private int cantidadPagos = 0;
     private File filePDF;
     Document document;
+
+    public int getCantidadPagos() {
+        return cantidadPagos;
+    }
+
+    public void setCantidadPagos(int cantidadPagos) {
+        this.cantidadPagos = cantidadPagos;
+    }
+
+    public File getFilePDF() {
+        return filePDF;
+    }
+
+    public void setFilePDF(File filePDF) {
+        this.filePDF = filePDF;
+    }
 
     public  int getId_employee() {
         return id_employee;
@@ -139,6 +156,10 @@ public class Comprobante {
         this.pdfTable = pdfTable;
     }
 
+    /**
+     * Metodo que crea el archivo PDF y el header de este con los atributos asignados en ese momento al objeto
+     * @param event Evento de las vistas
+     */
     public void createandheaderPDF(ActionEvent event) {
         
         try{
@@ -169,6 +190,7 @@ public class Comprobante {
                 paragraph.add(new Paragraph("ID: "+id_employee));
                 paragraph.add(new Paragraph("Salario: "+salary_employee));
                 paragraph.add(new Paragraph("Periodo: "+month));
+                paragraph.add(new Paragraph("Pago numero: "+cantidadPagos));
                 paragraph.add(new Paragraph(" "));
                 paragraph.add(new Paragraph(" "));
                 document.add(paragraph);
@@ -184,6 +206,80 @@ public class Comprobante {
         
     }
     
+    /**
+     * Metodo que sirve solo para crear la instancia del PDF, es decir crear su ubicacion y empezar proceso de escritura
+     * @param event Evento de la vista
+     */
+    public void createHeader(ActionEvent event) {
+        try{
+                    filePDF = new File(FILE);
+                    filePDF.setWritable(true);
+                    filePDF.mkdirs();
+                    filePDF = new File(FILE+"\\comprobante_todos_periodo_"+month+"_tipo_"+cantidadPagos+"_#"+Math.floor(Math.random()*(10000-1000)+1000)+".pdf");
+                    if (!filePDF.exists()) {
+                        filePDF.createNewFile();                    
+                } else if (filePDF.exists()) {
+                    filePDF.getAbsoluteFile().renameTo(new File(FILE+"\\comprobante_todos_periodo_"+month+"_tipo_"+cantidadPagos+"_#"+Math.floor(Math.random()*(10000-1000)+1000)+"_2.pdf"));
+                    filePDF.createNewFile();
+                }
+
+                OutputStream file = new FileOutputStream(filePDF);
+                document = new Document();
+                PdfWriter.getInstance(document, file);
+                
+                document.open();
+                document.add(new Paragraph(new Date().toString()));
+                document.add(new Paragraph(""));
+                Paragraph p = new Paragraph("COMPROBANTE DE NOMINA", new Font(Font.FontFamily.HELVETICA,20,Font.BOLD));
+                p.setAlignment(ALIGN_CENTER);
+                document.add(p);
+                document.add(new Paragraph(" "));
+                document.add(new Paragraph(" "));
+                document.add(new Paragraph("MES: " +month.toUpperCase()));
+                document.add(new Paragraph("PERIODO: "+cantidadPagos + ""));
+                document.add(new Paragraph(" "));
+                document.add(new Paragraph(" "));
+        } catch(Exception e){
+            e.printStackTrace();
+            if(e.toString().startsWith("java.io.FileNotFoundException:")) {
+                dg = new Dialogs( (Stage) ((Node) event.getSource()).getScene().getWindow());
+                dg.exceptionDialog("Error - archivo pdf", "Errores encontrados", "El archivo no se ha podido crear por problemas de permisos, o esta en uso.", e);
+            }
+        }
+    }
+    
+    /**
+     * Metodo que setea los datos el empleado en el PDF
+     * @param event Evento de la vista
+     */
+    public void creatingDataEmployee(ActionEvent event) {
+        
+        try {
+                Paragraph paragraph = new Paragraph("COMPROBANTE DE NOMINA", new Font(Font.FontFamily.HELVETICA,12,Font.BOLD));
+                paragraph.setAlignment(ALIGN_CENTER);
+                
+                paragraph.add(new Paragraph(" "));
+                paragraph.add(new Paragraph("Empleado: "+name_employee+" "+ lastname_employee));
+                paragraph.add(new Paragraph("ID: "+id_employee));
+                paragraph.add(new Paragraph("Salario: "+salary_employee));
+                paragraph.add(new Paragraph("Periodo: "+month));
+                paragraph.add(new Paragraph("Pago numero: "+cantidadPagos));
+                paragraph.add(new Paragraph(" "));
+                paragraph.add(new Paragraph(" "));
+                document.add(paragraph);
+                document.add(new Paragraph(" "));
+        } catch(Exception e){
+            e.printStackTrace();
+            if(e.toString().startsWith("java.io.FileNotFoundException:")) {
+                dg = new Dialogs( (Stage) ((Node) event.getSource()).getScene().getWindow());
+                dg.exceptionDialog("Error - archivo pdf", "Errores encontrados", "El archivo no se ha podido crear por problemas de permisos, o esta en uso.", e);
+            }
+        }
+    }
+    
+    /**
+     * Metodo que crea la tabla general de los comprobantes
+     */
     public void createTable() {
                 PdfPCell cell1 = new PdfPCell(new Phrase("DESCRIPCION",columnTitle));
                 cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -212,11 +308,50 @@ public class Comprobante {
                 pdfTable.setHeaderRows(1);
     }
     
+    /**
+     * Metodo que crea la tabla para multitud de empleados
+     */
+        public void createTableEmpleado() {
+                PdfPCell cell1 = new PdfPCell(new Phrase("EMPLEADO",columnTitle));
+                cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                pdfTableTodos.addCell(cell1);
+                
+                cell1 = new PdfPCell(new Phrase("SALARIO BRUTO",columnTitle));
+                cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                pdfTableTodos.addCell(cell1);
+                
+                cell1 = new PdfPCell(new Phrase("INGRESOS",columnTitle));
+                cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                pdfTableTodos.addCell(cell1);
+                
+                cell1 = new PdfPCell(new Phrase("IMPUESTOS",columnTitle));
+                cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                pdfTableTodos.addCell(cell1);
+                
+                cell1 = new PdfPCell(new Phrase("DEDUCCIONES",columnTitle));
+                cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                pdfTableTodos.addCell(cell1);
+                
+                cell1 = new PdfPCell(new Phrase("SALARIO NETO",columnTitle));
+                cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                pdfTableTodos.addCell(cell1);
+                pdfTableTodos.setHeaderRows(1);
+    }
+    
+        /**
+         * Metodo que adjunta la tabla al documento, y finaliza la escritura en el documento
+         */
     public void cerrarDoc() {
         try {
             document.add(pdfTable);
             document.addAuthor("Sistema de Nomina - LJ");
-            document.addTitle("compapapapa");
+            document.addTitle("Analisis y diseño de sistemas");
             document.close();
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -224,6 +359,47 @@ public class Comprobante {
                 
     }
     
+    /**
+     * Metodo que cierra la tabla del documento
+     */
+    public void cerrarTabla() {
+        try {
+            document.add(pdfTableTodos);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    /**
+     * Metodo que unicamente cierra el documento (la escritura en el documento)
+     */
+    public void soloCerrarDocFinal() {
+                try {
+            document.addAuthor("Sistema de Nomina - LJ");
+            document.addTitle("Analisis y diseño de sistemas");
+            document.close();
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    /**
+     * Metodo que llena el salario en la tabla
+     * @param salario Salario a poner en respectiva celda
+     */
+    public void llenarSalario(Double salario) {
+        pdfTable.addCell("Salario bruto");
+        pdfTable.addCell(salario.toString());
+        pdfTable.addCell("");
+        pdfTable.addCell("");
+        pdfTable.addCell("");
+    }
+    
+    /**
+     * Metodo que configura los ingresos de un empleado
+     * @param ingreso Monto del ingreso
+     * @param nombre  Nombre del ingreso
+     */
     public void llenarIngresos(Double ingreso, String nombre) {
         pdfTable.addCell(nombre);
         pdfTable.addCell("");
@@ -232,6 +408,11 @@ public class Comprobante {
         pdfTable.addCell("");
     }
     
+    /**
+     * Metodo que configura las deducciones de un empleado
+     * @param deducc Monto de la deduccion
+     * @param nombre Nombre de la deduccion
+     */
     public void llenarDeduccion(Double deducc, String nombre) {
         pdfTable.addCell(nombre);
         pdfTable.addCell("");
@@ -240,6 +421,10 @@ public class Comprobante {
         pdfTable.addCell("");
     }
     
+    /**
+     * Metodo que inserta el total de ingresos
+     * @param tingreso Monto del total de ingresos
+     */
     public void totalIngresos(Double tingreso) {
         pdfTable.getDefaultCell().setBackgroundColor(BaseColor.YELLOW);
         pdfTable.addCell("Total de ingresos:");
@@ -251,6 +436,10 @@ public class Comprobante {
         
     }
     
+    /**
+     * Metodo que inserta el total de ducciones
+     * @param tdeduc Monto total de deducciones
+     */
     public void totalDeducciones(Double tdeduc) {
         pdfTable.getDefaultCell().setBackgroundColor(BaseColor.YELLOW);
         pdfTable.addCell("Total de deducciones:");
@@ -260,6 +449,11 @@ public class Comprobante {
         pdfTable.addCell("");
         pdfTable.getDefaultCell().setBackgroundColor(null);
     }
+    
+    /**
+     * Metodo que inserta el valor neto de un empleado
+     * @param neto Monto del valor neto
+     */
     
     public void neto(Double neto) {
         pdfTable.getDefaultCell().setBackgroundColor(BaseColor.RED);
@@ -271,10 +465,27 @@ public class Comprobante {
         pdfTable.getDefaultCell().setBackgroundColor(null);
     }
     
-    public void fillNecesario(String first, String second, String third, String four) {
-        
+    /**
+     * Metodo que permite llenado para comprobante de muchos empleados
+     * @param empleado Nombre empleado
+     * @param sueldo Monto de su sueldo
+     * @param ingresos Monto de sus ingresos
+     * @param impuestos Monto de los impuestos
+     * @param deducciones Monto de las deducciones
+     * @param neto Monto del neto a pagar
+     */
+    public void fillNecesario(String empleado, String sueldo, String ingresos, String impuestos, String deducciones, String neto) {
+        pdfTableTodos.addCell(empleado);
+        pdfTableTodos.addCell(sueldo);
+        pdfTableTodos.addCell(ingresos);
+        pdfTableTodos.addCell(impuestos);
+        pdfTableTodos.addCell(deducciones);    
+        pdfTableTodos.addCell(neto);
     }
     
+    /**
+     * Metodo que permite abrir el PDF
+     */
     public void abrirPDF() {
         try {
             File path = filePDF;

@@ -6,8 +6,8 @@
 package entidades;
 
 /**
- *
- * @author pc167
+ * Clase de entidad de Departamento con getters y setters
+ * @author SistemaNomina LJ
  */
 public class Departamento extends Empresa {
     private int id;

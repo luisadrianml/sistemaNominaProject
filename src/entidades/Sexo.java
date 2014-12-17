@@ -6,8 +6,8 @@
 package entidades;
 
 /**
- *
- * @author pc167
+ * Clase de entidad de Sexo con getters y setters
+ * @author SistemaNomina LJ
  */
 public class Sexo {
     private String nombre;

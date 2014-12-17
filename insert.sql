@@ -138,3 +138,24 @@ select * from usuarios;
 insert into usuarios(usuario,clave,tipo_usuario) values ('admin', 'admin', 1);
 insert into usuarios(usuario,clave,tipo_usuario) values ('contable','contable',2);
 select * from usuario_pers;
+
+
+
+create table historico_general (id_empleado int(11), salariobruto decimal(15,2), sumaIngresos decimal(15,2), ingresoMasSalario decimal(15,2), horasExtra decimal(15,2), sumaImpuestos decimal(15,2), deducciones decimal(15,2), sumaDeducciones decimal(15,2), salarioNeto decimal(15,2), mes int(2), ano varchar(4), periodo int(11), foreign key (id_empleado) references empleado_admin(id) on delete CASCADE);
+create table historico_general_todos (id_empleado int(11), salariobruto decimal(15,2), sumaIngresos decimal(15,2), ingresoMasSalario decimal(15,2), horasExtra decimal(15,2), sumaImpuestos decimal(15,2), deducciones decimal(15,2), sumaDeducciones decimal(15,2), salarioNeto decimal(15,2), mes int(2), ano varchar(4), periodo int(11), foreign key (id_empleado) references empleado_admin(id) on delete CASCADE);
+
+-- insert into historico_general(id_empleado, salariobruto, sumaIngresos, ingresoMasSalario, horasExtra, mes, ano, periodo) values
+
+
+select * from historico_general where id_empleado=11 and mes=1 and ano = '2014' and periodo = 2;
+
+select * from historico_general;
+
+truncate table historico_general;
+
+
+select * from historico_general_todos;
+
+select empleado_admin.id, empleado_personal.nombre, empleado_personal.apellido,empleado_admin.id_estado from empleado_admin, empleado_personal where empleado_admin.id = empleado_personal.id_empleado and empleado_admin.id_estado = 1 and empleado_admin.tipo_salario= 1;
+
+delete from historico_general where mes = 2 and ano = '2014' and periodo = 1 and id_empleado = 10;

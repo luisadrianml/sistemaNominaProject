@@ -1,7 +1,8 @@
 package entidades;
 
 /**
- * Created by pc166 on 10/12/2014.
+ * Clase abstracta de entidad de FlujoEjectivo con getters y setters
+ * @author SistemaNomina LJ
  */
 public abstract class FlujoEfectivo {
     protected String nombre;

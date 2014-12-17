@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 
 package sistemanomina;
@@ -15,8 +14,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
- *
- * @author pc167
+ * Clase que crea la primera instancia del sistema, dando ejecucion al mismo sisema de Login
+ * @author SistemaNomina LJ
  */
 public class SistemaNomina extends Application {
     

@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 package sistemanomina;
 
@@ -10,6 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,34 +17,39 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 /**
- * FXML Controller class
+ * Clase que controla la vista del menu de contable
  *
- * @author pc167
+ * @author SistemaNomina LJ
  */
 public class ContPrimaryScreenController implements Initializable {
 
     @FXML
     void btn_addEmployee(ActionEvent event) {
         try {
+            // Abrir ventana
             Stage stage1 = new Stage();
             Parent root2;
             root2 = FXMLLoader.load(getClass().getResource("/vistas/AddEmployee.fxml"));
             Scene scene = new Scene(root2);
             stage1.setScene(scene);
-  
+            stage1.getIcons().add(new Image("/images/logo_solo.png"));
+                        stage1.setTitle("Sistema Nomina LJ 2014");
+
             stage1.show();
-            
-            
-            // cerrar ventana actual
+            // Fin de forma de abrir ventana
+             
+            // Fora de ocultar ventana actual (no la que acabas de abrir hay arriba)
             Node source = (Node) event.getSource();
             Stage stage = (Stage) source.getScene().getWindow();
             stage.hide();
             
+            //Metodo que esta atengo a cuando se cierre la ventana Stage1 para mostrar la que estaba antes
             stage1.setOnCloseRequest((WindowEvent we) -> {
                 System.out.println("Closing APP");
                 stage.show();
@@ -65,6 +70,9 @@ public class ContPrimaryScreenController implements Initializable {
             root2 = FXMLLoader.load(getClass().getResource("/vistas/EditEmployee.fxml"));
             Scene scene = new Scene(root2);
             stage1.setScene(scene);
+            stage1.getIcons().add(new Image("/images/logo_solo.png"));
+                        stage1.setTitle("Sistema Nomina LJ 2014");
+
             stage1.show();
             
               // Stage de ventana actual
@@ -88,6 +96,11 @@ public class ContPrimaryScreenController implements Initializable {
     @FXML
     void e0f092(ActionEvent event) {
     }
+    
+    @FXML
+    void cerrar(ActionEvent event) {
+        Platform.exit();
+    }
 
     @FXML
     void btn_calcularPrestaciones(ActionEvent event) {
@@ -97,6 +110,9 @@ try {
             root2 = FXMLLoader.load(getClass().getResource("/vistas/CalculoPrestaciones.fxml"));
             Scene scene = new Scene(root2);
             stage1.setScene(scene);
+            stage1.getIcons().add(new Image("/images/logo_solo.png"));
+                        stage1.setTitle("Sistema Nomina LJ 2014");
+
             stage1.show();
             
             
@@ -123,6 +139,9 @@ try {
             root2 = FXMLLoader.load(getClass().getResource("/vistas/Nomina.fxml"));
             Scene scene = new Scene(root2);
             stage1.setScene(scene);
+            stage1.getIcons().add(new Image("/images/logo_solo.png"));
+                        stage1.setTitle("Sistema Nomina LJ 2014");
+
             stage1.show();
             
             
@@ -148,7 +167,10 @@ try {
             Parent root2;
             root2 = FXMLLoader.load(getClass().getResource("/vistas/AddDepartamentos.fxml"));
             Scene scene = new Scene(root2);
+            stage1.getIcons().add(new Image("/images/logo_solo.png"));
             stage1.setScene(scene);
+            stage1.setTitle("Sistema Nomina LJ 2014");
+
             stage1.show();
             
             
@@ -175,6 +197,9 @@ try {
             root2 = FXMLLoader.load(getClass().getResource("/vistas/AddCargos.fxml"));
             Scene scene = new Scene(root2);
             stage1.setScene(scene);
+            stage1.getIcons().add(new Image("/images/logo_solo.png"));
+                        stage1.setTitle("Sistema Nomina LJ 2014");
+
             stage1.show();
             
             
@@ -201,6 +226,9 @@ try {
             root2 = FXMLLoader.load(getClass().getResource("/vistas/Novedades.fxml"));
             Scene scene = new Scene(root2);
             stage1.setScene(scene);
+                        stage1.setTitle("Sistema Nomina LJ 2014");
+
+            stage1.getIcons().add(new Image("/images/logo_solo.png"));
             stage1.show();
             
             
@@ -220,7 +248,7 @@ try {
     }
     
     /**
-     * Initializes the controller class.
+     * Metodo que inicializa la clase
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

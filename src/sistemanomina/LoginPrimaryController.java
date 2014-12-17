@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 
 package sistemanomina;
@@ -30,8 +29,8 @@ import mysql.MySqlDataBase;
 
 
 /**
- *
- * @author pc167
+ * Clase controladora del Login donde se hacen las verificaciones de acuerdo a tipo de usuario
+ * @author SistemaNomina LJ
  */
 public class LoginPrimaryController implements Initializable {
     
@@ -53,7 +52,11 @@ public class LoginPrimaryController implements Initializable {
     @FXML
     private Label label;
     
-
+    /**
+     * Boton de inicio de sesion
+     * @param event Evento de la vista
+     * @throws Exception Error si se encuentra problemas accediendo a la base de datos
+     */
     @FXML
     void hBlogin(ActionEvent event) throws Exception {
         String usuario = "";
@@ -86,6 +89,8 @@ public class LoginPrimaryController implements Initializable {
                     stage1.setMaxWidth(600);
                     stage1.setMinHeight(204);
                     stage1.setResizable(false);
+                                            stage1.setTitle("Sistema Nomina LJ 2014");
+
                     stage1.getIcons().add(new Image("/images/logo_solo.png"));
                     stage1.show();
 
@@ -104,6 +109,8 @@ public class LoginPrimaryController implements Initializable {
                     stage1.setMaxWidth(600);
                     stage1.setMinHeight(394);
                     stage1.setResizable(false);
+                                            stage1.setTitle("Sistema Nomina LJ 2014");
+
                     stage1.getIcons().add(new Image("/images/logo_solo.png"));
                     stage1.show();
 
@@ -129,12 +136,21 @@ public class LoginPrimaryController implements Initializable {
 
     }
     
+    /**
+     * Boton limpieza
+     * @param event Evento de la vista
+     */
     @FXML
     void hBClean(ActionEvent event) {
          text_pass.clear();
          text_user.clear();
     }
     
+    /**
+     * Metodo que inicializa el controlador
+     * @param url Por defecto del metodo
+     * @param rb Por defecto del metodo
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

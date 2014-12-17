@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 package sistemanomina;
 
@@ -41,9 +40,9 @@ import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 
 /**
- * FXML Controller class
+ * Clase que controla la vista de agregar empleado 
  *
- * @author pc167
+ * @author SistemaNomina LJ
  */
 public class AddEmployeeController implements Initializable {
     
@@ -155,6 +154,7 @@ public class AddEmployeeController implements Initializable {
                 database.Insert("dependientes","id_empleado,nombre,apellido,cedula,tipo_dependiente",admin_id.getText()+",'"+dependientes_nombre.getText()+"','"+dependientes_apellido.getText()+"','"+dependientes_ced.getText()+"','"+dependiente_tipo.getValue().getTipo()+"'");
                 
                 dg.informationWithoutHeaderDialog("Usuario creado", "El usuario ha sido creado existosamente.");
+                menuBar_limpiar(event);
                 
             } catch(Exception ex) {
                 dg.exceptionDialog("Error creando usuario", "Error C534ND0", "Se ha encontrado un error creando este usuario.", ex);
@@ -181,7 +181,7 @@ public class AddEmployeeController implements Initializable {
 
     
     /**
-     * Initializes the controller class.
+     * Metodo que inicializa la clase
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

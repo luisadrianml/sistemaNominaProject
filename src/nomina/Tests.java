@@ -16,7 +16,7 @@ public class Tests {
         Empleado emp = new Empleado();
         emp.setID_empleado(3);
 
-        Nomina nomina = ManejadorNomina.generarNomina(emp);
+        Nomina nomina = ManejadorNomina.generarNomina(emp, 0.0);
         
         nomina.setSalario(2000.00);
         //ManejadorNomina.

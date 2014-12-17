@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 package sistemanomina;
 
@@ -22,47 +21,86 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 /**
- *
- * @author pc167
+ * Clase que permite la muestra de dialogs de diferentes tipos
+ * @author SistemaNomina LJ
  */
 public class Dialogs {
+    /**
+     * Declaracion de Stage de la clase
+     */
     Stage stage;
+    
+    /**
+     * Declaracion de alert de la clase para configurar el tipo de alert
+     */
     Alert alert;
     
+    /**
+     * Constructor de la clase
+     * @param stage Parametro Stage que permite la configuracion de padre
+     */
     public Dialogs(Stage stage) {
         this.stage = stage;
         alert = new Alert(AlertType.NONE);
         alert.initOwner(stage);
     }
     
+    /**
+     * Constructor de la clase
+     * @param event Parametro que permite configuracion de padre con otro parametro tipo ActionEvent
+     */
     public Dialogs(ActionEvent event) {
         this.stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         alert = new Alert(AlertType.NONE);
         alert.initOwner(stage);
     }
     
+    /**
+     * Constructor de la clase vacio
+     */
     public Dialogs() {
         alert = new Alert(AlertType.NONE);
     }
 
+    /**
+     * Getter de Stage
+     * @return Retorna el State del momento
+     */
     public Stage getStage() {
         return stage;
     }
 
+     /**
+      * Setter de Stage
+      * @param stage Parametro del Stage
+      */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    /**
+     * Getter de Alert
+     * @return Retorna la alert de la clase
+     */
     public Alert getAlert() {
         return alert;
     }
 
+    /**
+     * Setter de alert
+     * @param alert Parametro de la alert a setear
+     */
     public void setAlert(Alert alert) {
         this.alert = alert;
     }
     
     
-    
+    /**
+     * Metodo que muestra dialogo de informacion
+     * @param title Parametro que setea el titulo del dialogo
+     * @param header Parametro que setea el cabezal del dialogo
+     * @param content Parametro que setea el contenido del dialogo
+     */
     public void informationDialog(String title, String header, String content) {
         alert.setAlertType(AlertType.INFORMATION);
         alert.setTitle(title);
@@ -71,6 +109,11 @@ public class Dialogs {
         alert.showAndWait();
     }
     
+        /**
+     * Metodo que muestra dialogo de informacion sin cabezal
+     * @param title Parametro que setea el titulo del dialogo
+     * @param content Parametro que setea el contenido del dialogo
+     */
     public void informationWithoutHeaderDialog(String title, String content) {
         alert.setAlertType(AlertType.INFORMATION);
         alert.setTitle(title);
@@ -79,7 +122,13 @@ public class Dialogs {
 
         alert.showAndWait();
     }
-    
+   
+    /**
+     * Metodo que muestra dialogo de advertencia
+     * @param title Parametro que setea el titulo del dialogo
+     * @param header Parametro que setea el cabezal del dialogo
+     * @param content Parametro que setea el contenido del dialogo
+     */
     public void warningDialog(String title, String header, String content) {
         alert.setAlertType(AlertType.WARNING);
         alert.setTitle(title);
@@ -89,6 +138,12 @@ public class Dialogs {
         alert.showAndWait();
     }
     
+    /**
+     * Metodo que muestra dialogo de error
+     * @param title Parametro que setea el titulo del dialogo
+     * @param header Parametro que setea el cabezal del dialogo
+     * @param content Parametro que setea el contenido del dialogo
+     */
     public void errorDialog(String title, String header, String content) {
         alert.setAlertType(AlertType.ERROR);
         alert.setTitle(title);
@@ -98,6 +153,12 @@ public class Dialogs {
         alert.showAndWait();
     }
     
+    /**
+     * Metodo que muestra dialogo de largo contenido
+     * @param title Parametro que setea el titulo del dialogo
+     * @param header Parametro que setea el cabezal del dialogo
+     * @param content Parametro que setea el contenido del dialogo
+     */  
     public void longDialog(String title, String header, String content) {
         alert.setAlertType(AlertType.INFORMATION);
         alert.setTitle(title);
@@ -126,7 +187,13 @@ public class Dialogs {
         alert.showAndWait();
     }
     
-    
+    /**
+     * Metodo que muestra dialogo de error con excepcion
+     * @param title Parametro que setea el titulo del dialogo
+     * @param header Parametro que setea el cabezal del dialogo
+     * @param content Parametro que setea el contenido del dialogo
+     * @param ex Parametro de la excepcion a mostrar
+     */
     public void exceptionDialog(String title, String header, String content, Exception ex) {
         alert.setAlertType(AlertType.ERROR);
         alert.setTitle(title);
@@ -161,6 +228,13 @@ public class Dialogs {
         alert.showAndWait();
     }
     
+    /**
+     * Metodo que muestra dialogo de confirmacion
+     * @param title Parametro que setea el titulo del dialogo
+     * @param header Parametro que setea el cabezal del dialogo
+     * @param content Parametro que setea el contenido del dialogo
+     * @return Retorna positivo si se selecciono OKAY
+     */
     public boolean confirmationDialog(String title, String header, String content) {
         boolean userSelectedOkay = false;
         alert.setAlertType(AlertType.CONFIRMATION);
@@ -173,6 +247,16 @@ public class Dialogs {
         return userSelectedOkay;
     }
     
+    /**
+     * Metodo que muestra dialogo de confirmacion personalizado
+     * @param title Parametro que setea el titulo del dialogo
+     * @param header Parametro que setea el cabezal del dialogo
+     * @param content Parametro que setea el contenido del dialogo
+     * @param btn1 Parametro del boton a mostrar numero 1
+     * @param btn2 Parametro del boton a mostrar numero 2 
+     * @param btn3 Parametro del boton a mostrar numero 3
+     * @return Retorna el entero del boton seleccionado respectivamente
+     */
     public int confirmationDialogWithCustomActions(String title, String header, String content, String btn1, String btn2, String btn3)  {
         int btnSelected = 0;
         

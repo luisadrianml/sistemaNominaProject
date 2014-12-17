@@ -6,20 +6,17 @@
 package entidades;
 
 /**
- * Clase de entidad de TipoDeduccion con getters y setters
+ * Clase de entidad de Meses con getters y setters
  * @author SistemaNomina LJ
  */
-public class TipoDeduccion {
-        private int id;
+public class Meses {
+    
+    private int id;
     private String nombre;
 
-    public TipoDeduccion(int id, String nombre) {
+    public Meses(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
-    }
-
-    public TipoDeduccion(int id) {
-        this.id = id;
     }
 
     public int getId() {
@@ -40,6 +37,10 @@ public class TipoDeduccion {
 
     @Override
     public String toString() {
-        return this.nombre;
+        return nombre;
     }
+    
+    
+    
+    
 }

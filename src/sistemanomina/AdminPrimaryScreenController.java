@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 
 package sistemanomina;
@@ -19,13 +18,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * FXML Controller class
+ * Clase que controla el menu de administrador
  *
- * @author pc167
+ * @author SistemaNomina LJ
  */
 public class AdminPrimaryScreenController implements Initializable {
     
@@ -36,6 +36,9 @@ public class AdminPrimaryScreenController implements Initializable {
             root = FXMLLoader.load(getClass().getResource("/vistas/Usuarios.fxml"));
             Scene scene = new Scene(root);
             stage1.setScene(scene);
+            stage1.getIcons().add(new Image("/images/logo_solo.png"));
+            stage1.setTitle("Sistema Nomina LJ 2014");
+
             stage1.show();
 
             
@@ -59,6 +62,8 @@ public class AdminPrimaryScreenController implements Initializable {
             root = FXMLLoader.load(getClass().getResource("/vistas/EmpresaData.fxml"));
             Scene scene = new Scene(root);
             stage1.setScene(scene);
+            stage1.getIcons().add(new Image("/images/logo_solo.png"));
+            stage1.setTitle("Sistema Nomina LJ 2014");
             stage1.show();
 
             
@@ -77,7 +82,7 @@ public class AdminPrimaryScreenController implements Initializable {
 
 
     /**
-     * Initializes the controller class.
+     * Metodo que inicializa la clase
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

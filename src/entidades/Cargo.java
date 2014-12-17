@@ -6,8 +6,8 @@
 package entidades;
 
 /**
- *
- * @author pc167
+ * Clase de entidad de Cargo con getters y setters
+ * @author SistemaNomina LJ
  */
 public class Cargo extends Empresa {
     private int id;

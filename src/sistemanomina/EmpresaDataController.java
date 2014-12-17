@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 package sistemanomina;
 
@@ -21,9 +20,9 @@ import java.util.Iterator;
 import java.util.ResourceBundle;
 
 /**
- * FXML Controller class
+ * Clase controladora de la vista de Empresas del area de administrador
  *
- * @author pc167
+ * @author SistemaNomina LJ
  */
 public class EmpresaDataController implements Initializable {
     
@@ -40,6 +39,10 @@ public class EmpresaDataController implements Initializable {
     @FXML
     private TextField txt_emp_rnc;
 
+    /**
+     * Boton de editar empresa
+     * @param event Evento de la vista
+     */
     @FXML
     void hB_emp_edit(ActionEvent event) {
         database.Update("empresa", "nombre='"+txt_emp_nombre.getText()+"',rnc='"+txt_emp_rnc.getText()+"'", "id", arrayEmp.get(0).getID());
@@ -49,13 +52,18 @@ public class EmpresaDataController implements Initializable {
      //   fillComboBox_emp_edit();
     }
     
-    void changeTxt() {
+    /**
+     * Metodo que hace el cambio de texto al seleccionar empresa
+     */
+    public void changeTxt() {
         txt_emp_nombre.setText(arrayEmp.get(0).getNombre());
         txt_emp_rnc.setText(arrayEmp.get(0).getRnc());
     }
     
     /**
-     * Initializes the controller class.
+     * Metodo que inicializa el controlador
+     * @param url Por defecto del metodo
+     * @param rb Por defecto del metodo
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -77,6 +85,12 @@ public class EmpresaDataController implements Initializable {
 //        });
     }   
     
+    /**
+     * Metodo que encuentra la empresa de una ubicacion dentro del array
+     * @param arrayL ArrayList de empresas para buscar
+     * @param search_id Indice que se busca
+     * @return Retorna la empresa que se buscaba
+     */
     public Empresa indiceDato(ArrayList <Empresa> arrayL, int search_id) {
         int j=0;
  
@@ -89,7 +103,10 @@ public class EmpresaDataController implements Initializable {
         return arrayL.get(j);
     }
     
-    protected void fillEmpresas() {
+    /**
+     * Metodo que llena un arraylist de las empresas que se encuentra en la base de datos
+     */
+    public void fillEmpresas() {
         arrayEmp = new ArrayList<>();
  //       arrayEmp.clear();
         ResultSet rs = database.Select("*","empresa");
@@ -104,7 +121,12 @@ public class EmpresaDataController implements Initializable {
         
     }
 
-    private void fillComboBox_emp_edit() {
+    /**
+     * @deprecated
+     * Metodo que permite llenado de empresas a editar
+     * Sin implementar por razones de trabajar con una unica empresa
+     */
+    public void fillComboBox_emp_edit() {
 
         cmb_emp_id.setPromptText("Seleccione...");
 
@@ -115,7 +137,10 @@ public class EmpresaDataController implements Initializable {
         }
     }
 
-    private void clearFields() {
+    /**
+     * Metodo para la limpieza de campos
+     */
+    public void clearFields() {
         txt_emp_nombre.clear();
         txt_emp_rnc.clear();
         //cmb_emp_id.setPromptText("Seleccione...");

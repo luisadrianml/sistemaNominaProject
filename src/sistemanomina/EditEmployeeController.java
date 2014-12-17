@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 package sistemanomina;
 
@@ -37,9 +36,9 @@ import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 
 /**
- * FXML Controller class
+ * Clase controladora de la vista que permite editar a los empleados
  *
- * @author pc167
+ * @author SistemaNomina LJ
  */
 public class EditEmployeeController implements Initializable {
     
@@ -56,7 +55,7 @@ public class EditEmployeeController implements Initializable {
     ArrayList<Departamento> arrayDepart;
     ArrayList<Cargo> arrayCargo;
     ArrayList<TipoSalario> arrayTipoSalario;
-//    
+
     private final ObservableList<Sexo> genero = FXCollections.observableArrayList(new Sexo("Masculino", 'm'), new Sexo("Femenino", 'f'));
 
     private final ObservableList<EstadoCivil> estadocivil = FXCollections.observableArrayList(
@@ -143,9 +142,11 @@ public class EditEmployeeController implements Initializable {
 
     @FXML
     private TextField empleado_apellido;
-    
-    
 
+    /**
+     * Metodo del boton de guardar empleado
+     * @param event Evento del boton
+     */
     @FXML
     void btn_empleado_guardar(ActionEvent event) {
         dg = new Dialogs((Stage) ((Node) event.getSource()).getScene().getWindow());
@@ -191,13 +192,17 @@ public class EditEmployeeController implements Initializable {
 
     }
 
+    /**
+     * Metodo del boton para limpiar campos
+     * @param event Evento del boton
+     * @FIXME Sin implementar aun
+     */
     @FXML
     void btn_empleado_limpiar(ActionEvent event) {
-
     }
 
     /**
-     * Initializes the controller class.
+     * Metodo inicializador de clase
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -245,7 +250,12 @@ public class EditEmployeeController implements Initializable {
                 + "aun no ha sido implementado.");
     }
     
-    private boolean all_camps_validated(ActionEvent event) {
+    /**
+     * Metodo para validar campos
+     * @param event Evento del boton
+     * @return Retorna positivo si los campos estan vacios
+     */
+    public boolean all_camps_validated(ActionEvent event) {
         if (!empleado_nombre.getText().isEmpty() && !empleado_cedula.getText().isEmpty() && !empleado_apellido.getText().isEmpty() &&
                 !empleado_civil.getSelectionModel().isEmpty() && 
                 !empleado_direccion.getText().isEmpty() && !empleado_mail.getText().isEmpty() && !empleado_movil.getText().isEmpty() &&
@@ -261,7 +271,10 @@ public class EditEmployeeController implements Initializable {
         }
     }
     
-    private void limpiar() {
+    /**
+     * Metodo para limpieza de botones
+     */
+    public void limpiar() {
         ArrayList<Object> array = new ArrayList<>();
         array.add(empleado_apellido);
         array.add(empleado_cedula);
@@ -285,7 +298,11 @@ public class EditEmployeeController implements Initializable {
         MenuBar.menuBarLimpiar(array);
     }
     
-    private void fillCampos(Empleado_Admin empAdmin) {
+    /**
+     * Metodo para llenar 
+     * @param empAdmin 
+     */
+    public void fillCampos(Empleado_Admin empAdmin) {
 
         empleado_admin = empAdmin;
         
@@ -348,7 +365,12 @@ public class EditEmployeeController implements Initializable {
         cmb_estado.setValue(settingItState(empleado_admin).getEstados());
     }
     
-        private Empleado_Admin settingItState(Empleado_Admin empleado_admin) {
+    /**
+     * Metodo que permite configurar el estado del empleado
+     * @param empleado_admin Empleado al que configurar el estado de acuerdo a lo obtenido de la base de datos
+     * @return Retorna el empleado con su estado
+     */
+    public Empleado_Admin settingItState(Empleado_Admin empleado_admin) {
             if (empleado_admin.getEstado() == 1) {
             empleado_admin.setEstados( new Estados(1,"Activo")) ;
         } else {
@@ -358,8 +380,10 @@ public class EditEmployeeController implements Initializable {
             return empleado_admin;
         }
     
-        private void llenarComboBox() {
-            
+    /**
+     * Metodo para llenar combobox
+     */
+    private void llenarComboBox() {
         gettingDataforDepartamento();
         gettingDataforCargo();
         gettingDataforTipoSalario();
@@ -379,7 +403,10 @@ public class EditEmployeeController implements Initializable {
  
     }
     
-    private void gettingDataforDepartamento() {
+    /**
+     * Metodo que obtiene data de los departamentos
+     */
+    public void gettingDataforDepartamento() {
           arrayDepart = new ArrayList<>();
  //       arrayEmp.clear();
         ResultSet rs = database.Select("id,nombre","departamento");
@@ -394,7 +421,10 @@ public class EditEmployeeController implements Initializable {
         
     }
     
-    private void gettingDataforCargo() {
+    /**
+     * Metodo que obtiene data de los cargos de la empresa
+     */
+    public void gettingDataforCargo() {
           arrayCargo = new ArrayList<>();
  //       arrayEmp.clear();
         ResultSet rs = database.Select("*","cargo");
@@ -409,7 +439,10 @@ public class EditEmployeeController implements Initializable {
         
     }
     
-    private void gettingDataforTipoSalario() {
+    /**
+     * Metodo que obtiene data de los tipos de salario
+     */
+    public void gettingDataforTipoSalario() {
         arrayTipoSalario = new ArrayList<>();
  //       arrayEmp.clear();
         ResultSet rs = database.Select("*","tipo_salario");
@@ -423,7 +456,6 @@ public class EditEmployeeController implements Initializable {
         }
              
     }
-    
     
     private Month calcularMes(int mes) {
 
@@ -495,12 +527,18 @@ public class EditEmployeeController implements Initializable {
         return m;
     }
     
+    /**
+     * Metodo que llena los comboBox
+     */
     private void ComboBoxFills() {
         listAdminID = FXCollections.observableArrayList(arrayAdminID);
         admin_id.setItems(listAdminID);
         llenarComboBox();
     }
-    
+   
+    /**
+     * Metodo que llena ID de los empleados
+     */
     private void llenarIDs() {
         arrayAdminID = new ArrayList<>();
  //       arrayEmp.clear();
@@ -539,13 +577,21 @@ public class EditEmployeeController implements Initializable {
         
         
     }
-
     
+    /**
+     * @deprecated
+     * Metodo descartado
+     * @param event 
+     */
     @FXML
     void menuBar_close(ActionEvent event) {
         MenuBar.menuBarClose(event);
     }
 
+    /**
+     * Metodo que muestra ventana de informacion
+     * @param event 
+     */
     @FXML
     void menuBar_acerca(ActionEvent event) {
         MenuBar.menuBarAcerca(event);

@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 package sistemanomina;
 
@@ -28,9 +27,8 @@ import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 
 /**
- * FXML Controller class
- *
- * @author pc167
+ * Clase controladora de la vista de usuarios establecida por tabs donde se pueden crear, editar y borrar.
+ * @author SistemaNomina LJ
  */
 public class UsuariosController implements Initializable {
 
@@ -40,8 +38,9 @@ public class UsuariosController implements Initializable {
      */
     MySqlDataBase database = new MySqlDataBase();
     Dialogs dg;
+    
     /**
-     * Declaracion variables de graficos
+     * Declaracion variables de javaFX
      */
     @FXML
     private ComboBox<String> cmb_edit_tipoUs;
@@ -97,7 +96,7 @@ public class UsuariosController implements Initializable {
     
     /**
      * Metodo al clic el boton de Crear
-     * @param event 
+     * @param event Parametro event que es al hacer clic al boton
      */
     @FXML
     void hB_crear(ActionEvent event) {
@@ -124,7 +123,12 @@ public class UsuariosController implements Initializable {
         }
     }
     
-    boolean all_camps(int i) { 
+    /**
+     * Metodo para validar campos de usuarios
+     * @param i Parametro especifica que tab se va a validar
+     * @return Retorna positivo si los campos no estan vacios
+     */
+    public boolean all_camps(int i) { 
         boolean r = false;
         if (i == 1) {
             if (!text_nombre.getText().isEmpty() && !text_apellido.getText().isEmpty() && !text_usuario.getText().isEmpty() && 
@@ -138,6 +142,10 @@ public class UsuariosController implements Initializable {
         return r;
     }
 
+    /**
+     * Metodo de limpieza de campos
+     * @param event 
+     */
     @FXML
     void hB_limpiar(ActionEvent event) {
         clearFields(1);
@@ -219,7 +227,10 @@ public class UsuariosController implements Initializable {
 
     }
      
-    private void fillComboBox_tipo_usuario() {
+     /**
+      * Metodo para llenar el combobox de tipo de usuario
+      */
+    public void fillComboBox_tipo_usuario() {
         
       
         ResultSet rs = database.Select("*","tipo_usuarios");
@@ -238,7 +249,10 @@ public class UsuariosController implements Initializable {
         
     }
      
-    private void fillComboBox_borrar() {
+    /**
+     * Metodo para llenar combobox de usuarios para borrar
+     */
+    public void fillComboBox_borrar() {
         ResultSet rs = database.Select("usuario","usuarios");
         cmb_usuarios_borrar.setPromptText("Seleccione...");
         cmb_usuarios_borrar.getItems().clear();
@@ -254,7 +268,10 @@ public class UsuariosController implements Initializable {
         }
     }
     
-    private void fillComboBox_editar() {
+    /**
+     * Metodo para llenar combobox de usuarios para editar
+     */
+    public void fillComboBox_editar() {
         ResultSet rs = database.Select("usuario","usuarios");
         cmb_usuario_edit.setPromptText("Seleccione...");
         cmb_usuario_edit.getItems().clear();
@@ -274,7 +291,7 @@ public class UsuariosController implements Initializable {
     /**
      * Metodo para llenar el combobox de los tipos de usuarios usuarios que dispone la base de datos
      */
-    private void fillComboBox_edit_tipos_usuarios() {
+    public void fillComboBox_edit_tipos_usuarios() {
         ResultSet rs = database.Select("nombre","tipo_usuarios");
         cmb_edit_tipoUs.setPromptText("Seleccione...");
         cmb_edit_tipoUs.getItems().clear();
@@ -291,7 +308,9 @@ public class UsuariosController implements Initializable {
     }
     
     /**
-     * Initializes the controller class.
+     * Metodo que inicializa el controlador
+     * @param url Por defecto del metodo
+     * @param rb Por defecto del metodo
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

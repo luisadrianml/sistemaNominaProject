@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 package sistemanomina;
 
@@ -36,12 +35,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import mysql.MySqlDataBase;
 
 /**
- * FXML Controller class
- *
- * @author pc167
+ * Clase del controlador de Novedades donde pueden establecer ingresos y deducciones de un empleado
+ * @author SistemaNomina LJ
  */
 public class NovedadesController implements Initializable {
     
+    /**
+     * Declaracion de variables
+     */
     MySqlDataBase database = new MySqlDataBase();
     int flag_bug = 1;
     
@@ -66,7 +67,9 @@ public class NovedadesController implements Initializable {
     private ArrayList<Deduccion> arrayTablaDeduccion;
     private ObservableList<Deduccion> listTablaDeduccion;
     
-
+    /**
+     * Declaracion de variables de la vista
+     */
     @FXML
     private ComboBox<Empleado> cmb_ID_ingresos;
     @FXML
@@ -103,7 +106,7 @@ public class NovedadesController implements Initializable {
     private Button bdn_borrar_tipoingreso;
     
     /**
-     * Declaracion de boton que se ejecuta al seleccionar el Boton de agregar en la tab de deducciones
+     * Metodo del boton que se ejecuta al seleccionar el Boton de agregar en la tab de deducciones
      * @param event 
      * Parametro de la accion de recibir el clic en el boton
      */
@@ -122,7 +125,11 @@ public class NovedadesController implements Initializable {
         }
     }
     
-        @FXML
+    /**
+     * Metodo que se ejecuta al seleccionar el boton
+     * @param event Parametro de la accion de recibir el clic en el boton
+     */
+    @FXML
     void btn_agregar_ingresos(ActionEvent event) {
         Dialogs dg = new Dialogs(event);
         if (all_camps(1)) {
@@ -138,7 +145,12 @@ public class NovedadesController implements Initializable {
         
     }
     
-    boolean limpiar(int i) {
+    /**
+     * Metodo de limpieza de campos
+     * @param i Especifica que tab limpiar
+     * @return Retorna siempre falso sin importar
+     */
+    private boolean limpiar(int i) {
         boolean validated = false;
         switch(i) {
             case 1: {
@@ -241,8 +253,9 @@ public class NovedadesController implements Initializable {
             llenarTIPODeduccion();
         }
     }
+    
     /**
-     * Initializes the controller class.
+     * Metodo que inicializa el controlador
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -363,7 +376,10 @@ public class NovedadesController implements Initializable {
     
     }    
     
-    void llenarIDEmpleadoD() {
+    /**
+     * Metodo para llenado de ID de empleados tab 1
+     */
+    public void llenarIDEmpleadoD() {
         arrayEmp = new ArrayList<>();
         ResultSet rs = database.Select("id", "empleado_admin", "id_estado", "1");
         try {
@@ -378,7 +394,10 @@ public class NovedadesController implements Initializable {
         cmb_ID_deducciones.setItems(listEmpleados);
     }
     
-    void llenarTIPODeduccion() {
+    /**
+     * Metodo para llenar tipo de deducciones de la tab 2
+     */
+    public void llenarTIPODeduccion() {
         arrayTipoDeducciones = new ArrayList<>();
         
         ResultSet rs = database.Select("*", "tipos_descuentos");
@@ -396,6 +415,11 @@ public class NovedadesController implements Initializable {
         cmb_tipodeduc.setItems(listTiposDeducciones);
     }
     
+    /**
+     * Validacion de campos
+     * @param i Especifica que tab se va a validar
+     * @return Retorna positivo si no estan vacios los campos
+     */
     boolean all_camps(int i) {
         boolean validated = false;
         switch(i) {
@@ -421,7 +445,10 @@ public class NovedadesController implements Initializable {
         return validated;
     }
     
-    void llenarTablaIngresos() {
+    /**
+     * Metodo para el llenado de la tabla de ingresos de la Tab 1
+     */
+    public void llenarTablaIngresos() {
         
         table_ingresos.getSelectionModel().clearSelection();
         
@@ -443,7 +470,10 @@ public class NovedadesController implements Initializable {
         
     }
     
-    void llenarTablaDeduccion() {
+    /**
+     * Metodo para llenado de tabla de deduccion
+     */
+    public void llenarTablaDeduccion() {
         
         table_deducciones.getSelectionModel().clearSelection();
         arrayTablaDeduccion = new ArrayList<>();
@@ -462,7 +492,10 @@ public class NovedadesController implements Initializable {
         table_deducciones.setItems(listTablaDeduccion);
     }
     
-    void llenarTIPOingreso() {
+    /**
+     * Metodo para llenado de tipo de ingresos que existen en la base de datos
+     */
+    public void llenarTIPOingreso() {
         arrayTipoIngreso = new ArrayList<>();
         
         ResultSet rs = database.Select("*", "tipos_ingresos");
@@ -480,8 +513,10 @@ public class NovedadesController implements Initializable {
         cmb_tipoingresos.setItems(listTiposIngreso);
     }
 
-    
-    void llenarIDEmpleado() {
+    /**
+     * Metodo para llenar los ID de empleados de la Tab@
+     */
+    public void llenarIDEmpleado() {
         arrayEmp = new ArrayList<>();
         ResultSet rs = database.Select("id", "empleado_admin", "id_estado", "1");
         try {

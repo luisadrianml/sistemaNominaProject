@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 package mysql;
 
@@ -10,12 +9,18 @@ import java.sql.*;
 import javafx.application.Platform;
 import sistemanomina.Dialogs;
 
-
+/**
+ * Clase que realiza de intermediario la conexion con la base de datos
+ * @author LuisAdrián
+ */
 public class MySqlDataBase {
     
     private String url="";
     private Connection conn=null;
 
+    /**
+     * Constructor de la clase que hace la conexion
+     */
     public MySqlDataBase(){
     
         try {
@@ -42,10 +47,18 @@ public class MySqlDataBase {
 
     }
     
+    /**
+     * Getter de la conexion
+     * @return Retorna la conexion 
+     */
     public Connection getConn(){
         return conn;
     }
     
+    /**
+     * Metodo para cerrar la conexion con la base de datos
+     * @return Retorna la conexion en la que fue cerrada la base de datos (osea NULL)
+     */
     public Connection closeConn(){
         
         try{
@@ -60,6 +73,11 @@ public class MySqlDataBase {
         return conn;
     }
     
+    /**
+     * Metodo para insertar en la base de datos
+     * @param table Parametro del nombre de la tabla
+     * @param values Parametros de los valores a insertar separados por coma y con respectivos ''
+     */
     public void Insert(String table, String values){
         try{
             PreparedStatement ps = conn.prepareStatement("INSERT INTO "+table+" VALUES ("+values+")");
@@ -72,6 +90,12 @@ public class MySqlDataBase {
     
     }
     
+    /**
+     * Metodo para insertar especificamente a unas columnas de una tabla
+     * @param table Parametro del nombre de la tabla
+     * @param columns Parametro del nombre de las columnas separadas por coma
+     * @param values Parametro de los valores separados por coma y ''
+     */
     public void Insert(String table, String columns, String values){
         try{
             PreparedStatement ps = conn.prepareStatement("INSERT INTO "+table+" ("+columns+") VALUES ("+values+")");
@@ -84,6 +108,12 @@ public class MySqlDataBase {
     
     }
     
+    /**
+     * Metodo para llenar combobox
+     * @deprecated
+     * @param query Parametro de lo que se busca ejecutar en la base de datos
+     * @return Retorna un resultSet de la base de datos con los datos obtenidos
+     */
     public ResultSet fillComboBox(String query){
         ResultSet rs=null;
         
@@ -104,7 +134,20 @@ public class MySqlDataBase {
         return rs;
     }
     
-        
+        /**
+         * Metodo para borrar de una base de datos
+         * @param table Parametro del nombre de la tabla
+         * @param where_nombre Parametro del nombre del where
+         * @param where_value Parametro del valor del where a borrar
+         * @return Retorna el resultset con los datos
+         * 
+         * 
+         * where_nombre = "id";
+         * where_value = "8";
+         * 
+         * detele from table example where id = '8';
+         * 
+         */
         public ResultSet Delete(String table, String where_nombre, String where_value){
             
             ResultSet rs=null;
@@ -122,6 +165,14 @@ public class MySqlDataBase {
             return rs;
         }
         
+        /**
+         * Metodo para actualizar en la base de datos
+         * @param table Nombre de la tabla
+         * @param set_values Valores a actualizar
+         * @param where_type Especificador de columna
+         * @param where_value Valor de columna especifica que eligira la dupla correcta
+         * @return 
+         */
         public ResultSet Update(String table, String set_values, String where_type, String where_value) {
             
             ResultSet rs=null;
@@ -141,6 +192,14 @@ public class MySqlDataBase {
             return rs;
         }
         
+        /**
+         * Metodo para actualizar base de dato
+         * @param table Nombre de la tabla
+         * @param set_values Valores a actualizar
+         * @param where_type Especificacion de columna de dupla 
+         * @param where_value Valor especifico
+         * @return Retorna los datos en ResultSet
+         */
         public ResultSet Update(String table, String set_values, String where_type, int where_value){
             
             ResultSet rs=null;
@@ -160,7 +219,12 @@ public class MySqlDataBase {
             return rs;
         }
         
-        
+        /**
+         * Metodo para realizar un Select desde la base de datos
+         * @param column_from_tables Parametro con el nombre de la columnas
+         * @param table Nombre de la tabla
+         * @return Retorna un resultset con los datos
+         */
         
         public ResultSet Select(String column_from_tables, String table) {
         
@@ -179,6 +243,14 @@ public class MySqlDataBase {
             return rs;
         }
     
+        /**
+         * Metodo para hacer un Select desde la base de datos
+         * @param column_from_tables Nombre de columnas
+         * @param table Nombre de tabla
+         * @param where_type Nombre del columna especifica
+         * @param where_value Valor especifico
+         * @return Retorna los datos en un resultset
+         */
         public ResultSet Select(String column_from_tables, String table, String where_type,
                 String where_value) {
         
@@ -199,8 +271,14 @@ public class MySqlDataBase {
             return rs;
         }
         
-        
-                public ResultSet Select(String column_from_tables, String table, String where) {
+        /**
+         * Metodo para hacer select desde base de datos
+         * @param column_from_tables Nombre columnas de la tabla
+         * @param table Nombre de la tabla
+         * @param where Conjunto de where con sus respectivos valores cuando se necesita usar logica
+         * @return Retorna los datos en un resultset
+         */
+        public ResultSet Select(String column_from_tables, String table, String where) {
         
                 ResultSet rs=null;
             
@@ -219,6 +297,10 @@ public class MySqlDataBase {
             return rs;
         }
         
+        /**
+         * Metodo para llamar un storeprocedure
+         * @param procedure Nombre del storeprocedure
+         */
         public void Call(String procedure){
             try{
                 CallableStatement callSt = conn.prepareCall(procedure);

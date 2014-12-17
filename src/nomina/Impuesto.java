@@ -1,7 +1,11 @@
+/*
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
+ */
 package nomina;
 
 /**
- * Created by pc166 on 10/12/2014.
+ * Clase identidad de los impuestos donde se almacenan sus datos, y factores
  */
 public  class Impuesto implements Cloneable{
     protected String nombre;

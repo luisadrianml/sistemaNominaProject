@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 package sistemanomina;
 
@@ -26,9 +25,9 @@ import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 
 /**
- * FXML Controller class
+ * Clase controladora de la vista de agregar cargos
  *
- * @author pc167
+ * @author SistemaNomina LJ
  */
 public class AddCargosController implements Initializable {
     
@@ -82,8 +81,11 @@ public class AddCargosController implements Initializable {
         
 
     }
-    
-    void limpiarCampos(int state) {
+    /**
+     * Metodo para limpiar campos de la clase
+     * @param state Parametro para especificar que area de la vista
+     */
+    public void limpiarCampos(int state) {
         if(state==1) {
             cargocrear_nombre.clear();
             cargocrear_monto.clear();
@@ -98,7 +100,7 @@ public class AddCargosController implements Initializable {
 
     
     /**
-     * Initializes the controller class.
+     * Metodo que inicializa la clase
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -128,7 +130,10 @@ public class AddCargosController implements Initializable {
         cargoedit_monto.setText(crg.getSalario()+"");
     }
 
-    private void llenarCargos() {
+    /**
+     * Metodo que llena los cargos que existen en la base de datos
+     */
+    public void llenarCargos() {
         arrayCargo = new ArrayList();
         
         ResultSet rs = database.Select("*", "cargo");

@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Sistema de nomina - Analisis y diseño de sistemas
+ * Universidad Iberoamericana
  */
 package sistemanomina;
 
@@ -26,9 +25,9 @@ import javafx.stage.Stage;
 import mysql.MySqlDataBase;
 
 /**
- * FXML Controller class
+ * Clase que controla la vista de agregar departamentos
  *
- * @author pc167
+ * @author SistemaNomina LJ
  */
 public class AddDepartamentosController implements Initializable {
     
@@ -84,7 +83,10 @@ public class AddDepartamentosController implements Initializable {
         
     }
     
-    void limpiar() {       
+    /**
+     * Metodo para limpiar contenido
+     */
+    public void limpiar() {       
         flag_bug = 2;
         cmbDPedit_nombre.getSelectionModel().clearSelection();
         txt_nombre.clear();
@@ -92,7 +94,7 @@ public class AddDepartamentosController implements Initializable {
     }
     
     /**
-     * Initializes the controller class.
+     * Metodo que inicializa la clase
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -115,7 +117,10 @@ public class AddDepartamentosController implements Initializable {
         });
     }    
     
-        private void llenarDepartamentos() {
+    /**
+     * Metodo que llena los departamentos que existen
+     */
+        public void llenarDepartamentos() {
         arrayDepartament = new ArrayList();
         
         ResultSet rs = database.Select("*", "departamento");
@@ -131,6 +136,12 @@ public class AddDepartamentosController implements Initializable {
         cmbDPedit_nombre.setItems(listDepartamentos);
     }
         
+        /**
+         * Metodo para obtener un departamento de acuerdo al indice que se tiene
+         * @param arrayL Conjunto de Departamentos en lo que buscar
+         * @param search_id Entero que permite hacer la busqueda
+         * @return Retorna el departamento encontrado
+         */
     public Departamento indiceDato(ArrayList <Departamento> arrayL, int search_id) {
         int j=0;
  
@@ -142,8 +153,12 @@ public class AddDepartamentosController implements Initializable {
         }
         return arrayL.get(j);
     }
-        
-    boolean camp_validated() {
+    
+    /**
+     * Metodo que comprueba validaciones de los campos
+     * @return Retorna positivo si los campos no estan vacios
+     */  
+    public boolean camp_validated() {
         return !txt_nombre.getText().trim().isEmpty();
     }
     

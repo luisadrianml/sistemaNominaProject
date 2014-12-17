@@ -6,8 +6,8 @@
 package entidades;
 
 /**
- *
- * @author pc167
+ * Clase de entidad de TipoSalario con getters y setters
+ * @author SistemaNomina LJ
  */
 public class TipoSalario {
     private int id;
